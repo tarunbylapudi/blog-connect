@@ -4,10 +4,15 @@ const bodyParser = require("body-parser");
 const colors = require("colors");
 
 const DbConnect = require("./config/db");
-const User = require("./model/user");
+const User = require("./model/User");
+const errorResponse = require("./utils/errorResponse");
+const errorHandler = require("./middleware/errorHandler");
+
+//routes
+const blogs = require("./routes/blog");
 
 //dotenv config
-dotenv.config({ path: "config.config.env" });
+dotenv.config({ path: "config/config.env" });
 
 //db connection
 DbConnect();
@@ -17,14 +22,10 @@ const app = express();
 //body parser
 app.use(express.json());
 
-app.post("/register", async (req, res) => {
-  const { name, email, password } = req.body;
+//routes
+app.use("/api/v1/blogsite/user", blogs);
 
-  await User.create({ name, email, password });
-
-  console.log(name, email, password);
-  res.json({ data: req.body });
-});
+app.use(errorHandler);
 
 const port = process.env.PORT || 8000;
 

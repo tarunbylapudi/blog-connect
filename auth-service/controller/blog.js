@@ -1,5 +1,5 @@
 const User = require("../model/User");
-const errorResponse = require("../utils/errorResponse");
+const ErrorResponse = require("../utils/ErrorResponse");
 
 exports.register = async (req, res, next) => {
   try {
@@ -24,7 +24,7 @@ exports.login = async (req, res, next) => {
 
     //validate email password
     if (!email || !password) {
-      throw new errorResponse("Please provide an email and a password", 400);
+      throw new ErrorResponse("Please provide an email and a password", 400);
     }
 
     //check for the user
@@ -33,14 +33,14 @@ exports.login = async (req, res, next) => {
     console.log(user);
 
     if (!user) {
-      throw new errorResponse("unregistered User", 400);
+      throw new ErrorResponse("unregistered User", 400);
     }
 
     //chech for password match
     const isMatch = await user.matchPassword(password);
 
     if (!isMatch) {
-      throw new errorResponse("invalid credentials", 400);
+      throw new ErrorResponse("invalid credentials", 400);
     }
 
     const token = user.getSignedJwtToken();

@@ -18,7 +18,7 @@ const BlogSchema = new mongoose.Schema({
   },
   authorName: {
     type: String,
-    required: [true, "Please add a article"],
+    required: [true, "Please add a Author"],
   },
   createdAt: {
     type: Date,

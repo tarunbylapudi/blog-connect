@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 
 const User = require("../model/User");
-const ErrorResponse = require("../utils/errorResponse");
+const ErrorResponse = require("../utils/ErrorResponse");
 
 //dotenv config
 dotenv.config({ path: "config/config.env" });

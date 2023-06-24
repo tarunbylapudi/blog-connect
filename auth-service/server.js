@@ -5,8 +5,8 @@ const colors = require("colors");
 
 const DbConnect = require("./config/db");
 const User = require("./model/User");
-const errorResponse = require("./utils/errorResponse");
-const errorHandler = require("./middleware/errorHandler");
+const ErrorResponse = require("./utils/ErrorResponse");
+const ErrorHandler = require("./middleware/ErrorHandler");
 
 //routes
 const blogs = require("./routes/blog");
@@ -25,7 +25,7 @@ app.use(express.json());
 //routes
 app.use("/api/v1/blogsite/user", blogs);
 
-app.use(errorHandler);
+app.use(ErrorHandler);
 
 const port = process.env.PORT || 8000;
 

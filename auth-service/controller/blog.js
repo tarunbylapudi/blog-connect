@@ -21,6 +21,7 @@ exports.login = async (req, res, next) => {
     const { email, password } = req.body;
 
     console.log(email, password);
+    console.log("login Called");
 
     //validate email password
     if (!email || !password) {
@@ -51,6 +52,3 @@ exports.login = async (req, res, next) => {
   }
 };
 
-exports.tarun = async (req, res, next) => {
-  res.status(200).json({ data: "test" });
-};

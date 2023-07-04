@@ -1,20 +1,14 @@
-const ErrorResponse = require("../utils/errorResponse");
+const ErrorResponse = require("../utils/ErrorResponse");
 
 const errorHandler = (err, req, res, next) => {
-  console.log(req.params)
   let error = { ...err };
   error.message = err.message;
 
-  //log err for dev
-  console.log(err.stack.red);
-
-  //mongoose bag object Id
-  if (err.name === "CastError") {
-    console.log(req.params)
+  //mongoose bad object Id
+  if ((err.name = "CastError")) {
     const message = `Resource not found with id : ${error.value}`;
     error = new ErrorResponse(message, 404);
   }
-
   //Mongoose duplicate key
   if (err.code === 11000) {
     const message = "Duplicate feild entered";

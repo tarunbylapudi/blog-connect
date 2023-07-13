@@ -1,4 +1,5 @@
 import {
+  Card,
   CardMedia,
   CardContent,
   Button,
@@ -6,7 +7,7 @@ import {
   CardActions,
 } from "@mui/material";
 
-const Card = () => {
+const BlogCard = () => {
   return (
     <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
       <CardMedia
@@ -34,4 +35,4 @@ const Card = () => {
   );
 };
 
-export default Card;
+export default BlogCard;

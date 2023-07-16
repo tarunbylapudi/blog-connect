@@ -12,12 +12,17 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import styles from "./css/SignIn.module.css";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
-export default function SignIn() {
+const SignIn = (props) => {
+  const SignInSignUpToggle = () => {
+    props.onSignSignUpHandler();
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -85,12 +90,10 @@ export default function SignIn() {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
+                <Link variant="body2">Forgot password?</Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link variant="body2" onClick={SignInSignUpToggle} className={styles.pointer}>
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
@@ -100,4 +103,6 @@ export default function SignIn() {
       </Container>
     </ThemeProvider>
   );
-}
+};
+
+export default SignIn;

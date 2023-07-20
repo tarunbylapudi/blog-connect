@@ -14,6 +14,8 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import styles from "./css/SignUp.module.css";
 
+import { signUp } from "../../api/auth";
+
 // TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
@@ -23,10 +25,17 @@ const SignUp = (props) => {
     props.onSignSignUpHandler();
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
+      name: data.get("name"),
+      email: data.get("email"),
+      password: data.get("password"),
+    });
+
+    await signUp({
+      name: data.get("name"),
       email: data.get("email"),
       password: data.get("password"),
     });
@@ -57,27 +66,18 @@ const SignUp = (props) => {
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"
-                  name="firstName"
+                  name="name"
                   required
                   fullWidth
-                  id="firstName"
-                  label="First Name"
+                  id="Name"
+                  label="Name"
                   autoFocus
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                />
-              </Grid>
+
               <Grid item xs={12}>
                 <TextField
                   required
@@ -118,7 +118,11 @@ const SignUp = (props) => {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link variant="body2" onClick={SignInSignUpToggle} className={styles.pointer}>
+                <Link
+                  variant="body2"
+                  onClick={SignInSignUpToggle}
+                  className={styles.pointer}
+                >
                   Already have an account? Sign in
                 </Link>
               </Grid>

@@ -14,6 +14,8 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import styles from "./css/SignIn.module.css";
 
+import { login } from "../../api/auth";
+
 // TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
@@ -23,13 +25,18 @@ const SignIn = (props) => {
     props.onSignSignUpHandler();
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+
+    const response = await login({
       email: data.get("email"),
       password: data.get("password"),
     });
+
+    if (response) {
+      localStorage.setItem("token", response.token);
+    }
   };
 
   return (
@@ -93,7 +100,11 @@ const SignIn = (props) => {
                 <Link variant="body2">Forgot password?</Link>
               </Grid>
               <Grid item>
-                <Link variant="body2" onClick={SignInSignUpToggle} className={styles.pointer}>
+                <Link
+                  variant="body2"
+                  onClick={SignInSignUpToggle}
+                  className={styles.pointer}
+                >
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

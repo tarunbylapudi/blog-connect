@@ -1,9 +1,6 @@
 const ErrorResponse = require("dev-camper-api/utils/errorResponse");
 const Blog = require("../model/Blog");
 
-const ISODate = require("isodate");
-const moment = require("moment");
-const { formatISO, parseISO } = require("date-fns");
 const produceMessage = require("../config/kafkaProducerConfig");
 
 exports.getBlogs = async (req, res, next) => {

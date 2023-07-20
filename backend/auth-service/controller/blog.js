@@ -10,7 +10,7 @@ exports.register = async (req, res, next) => {
 
     //console.log(name, email, password);
     const token = user.getSignedJwtToken();
-    await produceMessage(`User registered with ID: ${user.id}`);
+    //await produceMessage(`User registered with ID: ${user.id}`);
     res.status(200).json({ success: true, token });
   } catch (error) {
     next(error);

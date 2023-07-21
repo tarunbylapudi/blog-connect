@@ -2,9 +2,9 @@ const { Kafka, Partitioners } = require("kafkajs");
 
 // Define the Kafka broker(s) configuration
 const kafka = new Kafka({
-  clientId: "auth-producer",
-  brokers: ["localhost:9092"], // Add your Kafka broker(s) here
-  createPartitioner: Partitioners.LegacyPartitioner
+  clientId: "auth-service",
+  requestTimeout: 20000,
+  brokers: ["localhost:29092"], // Add your Kafka broker(s) here
 });
 
 // Create the producer instance
@@ -18,7 +18,7 @@ const produceMessage = async (message) => {
 
     // Send the message to the specified topic
     await producer.send({
-      topic: "blog-service-topic",
+      topic: "auth-service-topic",
       messages: [
         {
           value: message,

@@ -18,7 +18,7 @@ const produceMessage = async (message) => {
 
     // Send the message to the specified topic
     await producer.send({
-      topic: "blog-service-topic",
+      topic: "codespotify-topic",
       messages: [
         {
           value: message,

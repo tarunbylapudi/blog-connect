@@ -164,13 +164,7 @@ services:
       - 3000:3000
     depends_on:
       - prometheus
-  
-  sonarqube:
-       container_name: sonarqube-cntr
-       image: sonarqube:latest
-       ports:
-         - "9000:9000"
-
+      
 networks:
   kafka_elk_nw:
     driver: bridge

@@ -7,7 +7,6 @@ const {
   getMyBlogs,
   getBlog,
   updateBlog,
-  getBlogsByDates,
 } = require("../Controller/blog");
 
 const advancedResults = require("../middleware/advancedResults");
@@ -56,6 +55,7 @@ const router = express.Router();
  */
 
 router.route("/").get(getBlogs).post(addBlog);
+router.route("/create").post(addBlog);
 
 /**
  * @swagger
@@ -161,6 +161,7 @@ router.route("/myBlogs").get(getMyBlogs);
  */
 router.route("/:id").get(getBlog).delete(deleteBlog).put(updateBlog);
 
-router.route("/dates").get(getBlogsByDates);
+router.route("/delete/:id").delete(deleteBlog);
+router.route("/update/:id").put(updateBlog);
 
 module.exports = router;

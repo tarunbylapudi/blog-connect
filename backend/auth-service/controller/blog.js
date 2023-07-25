@@ -10,7 +10,7 @@ exports.register = async (req, res, next) => {
 
     //console.log(name, email, password);
     const token = user.getSignedJwtToken();
-    await produceMessage(`User registered with ID: ${user.id}`);
+    await produceMessage(`User registration successfull with ID: ${user.id}`);
     res.status(200).json({ success: true, token });
   } catch (error) {
     next(error);
@@ -22,7 +22,6 @@ exports.login = async (req, res, next) => {
     const { email, password } = req.body;
 
     console.log(email, password);
-    console.log("login Called");
 
     //validate email password
     if (!email || !password) {
@@ -32,9 +31,10 @@ exports.login = async (req, res, next) => {
     //check for the user
     const user = await User.findOne({ email }).select("+password");
 
-    console.log(user);
+    //console.log(user);
 
     if (!user) {
+      await produceMessage("User unrigistered");
       throw new ErrorResponse("unregistered User", 400);
     }
 
@@ -42,14 +42,14 @@ exports.login = async (req, res, next) => {
     const isMatch = await user.matchPassword(password);
 
     if (!isMatch) {
+      await produceMessage("invalid credentials");
       throw new ErrorResponse("invalid credentials", 400);
     }
 
     const token = user.getSignedJwtToken();
-    await produceMessage(`User logged in successfully! with ID: ${user.id}`);
+    await produceMessage(`User logged in successfully with ID: ${user.id}`);
     res.status(200).json({ success: true, token });
   } catch (error) {
     next(error);
   }
 };
-

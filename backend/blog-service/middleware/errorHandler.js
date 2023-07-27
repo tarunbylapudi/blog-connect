@@ -1,7 +1,8 @@
 const ErrorResponse = require("../utils/errorResponse");
+const produceMessage = require("../config/kafkaProducerConfig");
 
-const errorHandler = (err, req, res, next) => {
-  console.log(req.params)
+const errorHandler = async (err, req, res, next) => {
+  console.log(req.params);
   let error = { ...err };
   error.message = err.message;
 
@@ -10,7 +11,7 @@ const errorHandler = (err, req, res, next) => {
 
   //mongoose bag object Id
   if (err.name === "CastError") {
-    console.log(req.params)
+    console.log(req.params);
     const message = `Resource not found with id : ${error.value}`;
     error = new ErrorResponse(message, 404);
   }
@@ -25,7 +26,7 @@ const errorHandler = (err, req, res, next) => {
   if (err.name === "ValidationError") {
     error = new ErrorResponse(err.message, 400);
   }
-
+  await produceMessage(error.message);
   res
     .status(error.statusCode || 500)
     .json({ success: false, error: error.message || "Server Error" });

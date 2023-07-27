@@ -4,12 +4,12 @@ global:
 scrape_configs:
   - job_name: 'actuator-auth'
     metrics_path: 'auth-service/metrics' # Job to scrape application metrics
-    scrape_interval: 5s
+    scrape_interval: 15s
     static_configs:
       - targets: ['192.168.29.234:8002']
 
   - job_name: 'actuator-blog'
     metrics_path: 'blog-service/metrics' # Job to scrape application metrics
-    scrape_interval: 5s
+    scrape_interval: 15s
     static_configs:
       - targets: ['192.168.29.234:8002']

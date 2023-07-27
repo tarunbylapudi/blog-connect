@@ -17,7 +17,9 @@ dotenv.config({ path: "config/config.env" });
 const server = gateway({
   timeout: 5000,
   middlewares: [
-    morgan("dev"),
+    morgan("dev", {
+      skip: (req, res) => req.url === "/metrics",
+    }),
     require("express-mongo-sanitize")(),
     require("cors")(),
     require("helmet")(),

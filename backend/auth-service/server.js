@@ -10,7 +10,7 @@ const rateLimit = require("express-rate-limit");
 const hpp = require("hpp");
 const cors = require("cors");
 const swaggerUI = require("swagger-ui-express");
-const promClient=require("prom-client")
+const promClient = require("prom-client");
 
 const DbConnect = require("./config/db");
 const User = require("./model/User");
@@ -36,7 +36,11 @@ app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 app.use(express.json());
 
 //logger
-app.use(morgan("combined"));
+app.use(
+  morgan("combined", {
+    skip: (req, res) => req.url === "/metrics?",
+  })
+);
 
 //sanitize data
 app.use(mongoSanitize());
@@ -50,7 +54,7 @@ app.use(xss());
 //rate limiting
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 minutes
-  max: 100, // Limit each IP to 100 requests per `window` (here, per 10 minutes)
+  max: 500, // Limit each IP to 100 requests per `window` (here, per 10 minutes)
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });

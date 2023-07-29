@@ -9,7 +9,7 @@ const logger = require("./utils/logging");
 
 const protect = require("./middleware/auth");
 const morgan = require("morgan");
-const errorHandler = require("dev-camper-api/middleware/error");
+const ErrorResponse = require("./utils/ErrorResponse");
 const conditionalProtect = require("./middleware/conditionalProtect");
 
 dotenv.config({ path: "config/config.env" });

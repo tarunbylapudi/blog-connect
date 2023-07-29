@@ -1,4 +1,4 @@
-const ErrorResponse = require("dev-camper-api/utils/errorResponse");
+const ErrorResponse = require("../utils/ErrorResponse");
 const Blog = require("../model/Blog");
 
 const produceMessage = require("../config/kafkaProducerConfig");

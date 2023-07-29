@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import * as React from "react";
 import { useParams } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
@@ -88,22 +87,22 @@ const defaultTheme = createTheme();
 
 const Blog = () => {
   const [blogData, setBlogData] = useState(null);
-  useEffect(() => {
-    console.log("useEffectRunning");
-    async function fetchData() {
-      const response = await getBlog("64c15c5f709c01fba6f881e5");
-      setBlogData(response);
-    }
-    fetchData();
-  }, []);
-export default function Blog() {
+  // useEffect(() => {
+  //   console.log("useEffectRunning");
+  //   async function fetchData() {
+  //     const response = await getBlog("64c15c5f709c01fba6f881e5");
+  //     setBlogData(response);
+  //   }
+  //   fetchData();
+  // }, []);
   const params = useParams();
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
       <Container maxWidth="lg">
         <main>
-          {`${JSON.stringify(blogData.data.category)}`}
+          {/* {`${JSON.stringify(blogData.data.category)}`} */}
+          {params.id}
           <MainFeaturedPost post={mainFeaturedPost} />
 
           <Grid container spacing={5} sx={{ mt: 3 }}>

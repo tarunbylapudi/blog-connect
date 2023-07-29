@@ -2,6 +2,7 @@ import axios from "axios";
 
 const base = process.env.REACT_APP_BASE_URL;
 const blogURL = base + process.env.REACT_APP_BLOG_URL;
+const getAllBlogsURL = base + process.env.REACT_APP_ALL_BLOGS_URL;
 
 export const getBlog = async (blogId) => {
   try {
@@ -17,7 +18,8 @@ export const getBlog = async (blogId) => {
 
 export const getBlogs = async () => {
   try {
-    const response = await axios.get();
+    console.log(getAllBlogsURL);
+    const response = await axios.get(getAllBlogsURL);
     console.log(response.data);
     return response.data;
   } catch (error) {

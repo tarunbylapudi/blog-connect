@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, {useEffect} from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -8,6 +8,7 @@ import Link from "@mui/material/Link";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Header from "../common/Header";
 import BlogCard from "../common/BlogCard";
+import { getBlogs } from "../../api/blog";
 
 import classes from "./css/Home.module.css"
 
@@ -18,6 +19,15 @@ const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const defaultTheme = createTheme();
 
 export default function Home() {
+  useEffect(() => {
+    console.log("useEffectRunning");
+    async function fetchData() {
+      const response = await getBlogs();
+      console.log(response);
+      // setBlogData(response);
+    }
+    fetchData();
+  }, []);
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />

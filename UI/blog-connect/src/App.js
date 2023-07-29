@@ -8,19 +8,10 @@ import { useState } from "react";
 import Blog from "./components/blog/Blog";
 
 function App() {
-  const [showSignIn, setShowSignIn] = useState(true);
-
-  const signInSignUpHandler = () => {
-    setShowSignIn((prev) => !prev);
-  };
   return (
     <>
       <Header />
-
       <Outlet />
-      {/* {showSignIn && <SignIn onSignSignUpHandler={signInSignUpHandler} />}
-      {!showSignIn && <SignUp onSignSignUpHandler={signInSignUpHandler} />} */}
-      {/* <Home /> */}
       <Footer />
     </>
   );

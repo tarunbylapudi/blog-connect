@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
@@ -6,15 +6,13 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import Header from "./Header";
 import MainFeaturedPost from "./MainFeaturedPost";
-import FeaturedPost from "./FeaturedPost";
 import Main from "./Main";
-import Sidebar from "./Sidebar";
-import Footer from "./Footer";
 import post1 from "./blog-post.1.md";
 import post2 from "./blog-post.2.md";
 import post3 from "./blog-post.3.md";
+
+import { getBlog } from "../../api/blog";
 
 const sections = [
   { title: "Technology", url: "#" },
@@ -86,29 +84,31 @@ const sidebar = {
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function Blog() {
+const Blog = () => {
+  const [blogData, setBlogData] = useState(null);
+  useEffect(() => {
+    console.log("useEffectRunning");
+    async function fetchData() {
+      const response = await getBlog("64c15c5f709c01fba6f881e5");
+      setBlogData(response);
+    }
+    fetchData();
+  }, []);
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
       <Container maxWidth="lg">
         <main>
+          {`${JSON.stringify(blogData.data.category)}`}
           <MainFeaturedPost post={mainFeaturedPost} />
-          {/* <Grid container spacing={4}>
-            {featuredPosts.map((post) => (
-              <FeaturedPost key={post.title} post={post} />
-            ))}
-          </Grid> */}
+
           <Grid container spacing={5} sx={{ mt: 3 }}>
             <Main title="From the firehose" posts={posts} />
-            {/* <Sidebar
-              title={sidebar.title}
-              description={sidebar.description}
-              archives={sidebar.archives}
-              social={sidebar.social}
-            /> */}
           </Grid>
         </main>
       </Container>
     </ThemeProvider>
   );
-}
+};
+
+export default Blog;

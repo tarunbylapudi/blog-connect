@@ -9,6 +9,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Header from "../common/Header";
 import BlogCard from "../common/BlogCard";
 
+import classes from "./css/Home.module.css"
+
 
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -20,7 +22,7 @@ export default function Home() {
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
 
-      <main>
+      <main className={classes.home}>
         {/* Hero unit */}
 
         <Container sx={{ py: 8 }} maxWidth="md">

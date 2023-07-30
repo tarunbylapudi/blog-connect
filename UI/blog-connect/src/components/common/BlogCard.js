@@ -7,7 +7,7 @@ import {
   CardActions,
 } from "@mui/material";
 
-const BlogCard = () => {
+const BlogCard = (props) => {
   return (
     <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
       <CardMedia
@@ -20,7 +20,7 @@ const BlogCard = () => {
       />
       <CardContent sx={{ flexGrow: 1 }}>
         <Typography gutterBottom variant="h5" component="h2">
-          Heading
+          {props.title}
         </Typography>
         <Typography>
           This is a media card. You can use this section to describe the

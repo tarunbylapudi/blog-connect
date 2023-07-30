@@ -2,7 +2,7 @@ import axios from "axios";
 
 const base = process.env.REACT_APP_BASE_URL;
 const blogURL = base + process.env.REACT_APP_BLOG_URL;
-const getAllBlogsURL = base + process.env.REACT_APP_ALL_BLOGS_URL;
+const getAllBlogsURL = base + process.env.REACT_APP_ADD_GET_BLOGS_URL;
 
 export const getBlog = async (blogId) => {
   try {

@@ -8,6 +8,8 @@ import {
 } from "@mui/material";
 
 const BlogCard = (props) => {
+  const { blogName, article } = props.blog;
+  const content = article.substring(0, 150) + "...";
   return (
     <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
       <CardMedia
@@ -19,17 +21,13 @@ const BlogCard = (props) => {
         image="https://source.unsplash.com/random?wallpapers"
       />
       <CardContent sx={{ flexGrow: 1 }}>
-        <Typography gutterBottom variant="h5" component="h2">
-          {props.title}
+        <Typography gutterBottom variant="h5" >
+          {blogName}
         </Typography>
-        <Typography>
-          This is a media card. You can use this section to describe the
-          content.
-        </Typography>
+        <Typography variant="body1">{content}</Typography>
       </CardContent>
       <CardActions>
         <Button size="small">View</Button>
-        <Button size="small">Edit</Button>
       </CardActions>
     </Card>
   );

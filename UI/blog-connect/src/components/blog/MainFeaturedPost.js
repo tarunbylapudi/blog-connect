@@ -44,14 +44,14 @@ function MainFeaturedPost(props) {
             }}
           >
             <Typography component="h1" variant="h3" color="inherit" gutterBottom>
-              {post.title}
+              {post.blogName}
             </Typography>
-            <Typography variant="h5" color="inherit" paragraph>
+            {/* <Typography variant="h5" color="inherit" paragraph>
               {post.article}
-            </Typography>
-            <Link variant="subtitle1" href="#">
+            </Typography> */}
+            {/* <Link variant="subtitle1" href="#">
               {post.linkText}
-            </Link>
+            </Link> */}
           </Box>
         </Grid>
       </Grid>

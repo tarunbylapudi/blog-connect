@@ -86,24 +86,22 @@ const sidebar = {
 const defaultTheme = createTheme();
 
 const Blog = () => {
-  const [blogData, setBlogData] = useState(null);
-  // useEffect(() => {
-  //   console.log("useEffectRunning");
-  //   async function fetchData() {
-  //     const response = await getBlog("64c15c5f709c01fba6f881e5");
-  //     setBlogData(response);
-  //   }
-  //   fetchData();
-  // }, []);
+  const [blogData, setBlogData] = useState("loading");
+  useEffect(() => {
+    console.log("useEffectRunning");
+    async function fetchData() {
+      const response = await getBlog(params.id);
+      setBlogData(response.data);
+    }
+    fetchData();
+  }, []);
   const params = useParams();
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
       <Container maxWidth="lg">
         <main>
-          {/* {`${JSON.stringify(blogData.data.category)}`} */}
-          {params.id}
-          <MainFeaturedPost post={mainFeaturedPost} />
+          <MainFeaturedPost post={blogData} />
 
           <Grid container spacing={5} sx={{ mt: 3 }}>
             <Main title="From the firehose" posts={posts} />

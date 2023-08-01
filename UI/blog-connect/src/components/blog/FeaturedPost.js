@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
@@ -8,46 +9,34 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 
 function FeaturedPost(props) {
-  const { post } = props;
+  const { blogName, article, _id } = props.blog;
+  const shortArticle = article.substring(0, 170) + "...";
+  const url = "https://source.unsplash.com/random?wallpapers";
 
   return (
     <Grid item xs={12} md={6}>
-      <CardActionArea component="a" href="#">
+      <CardActionArea component="a">
         <Card sx={{ display: 'flex' }}>
           <CardContent sx={{ flex: 1 }}>
             <Typography component="h2" variant="h5">
-              {post.title}
-            </Typography>
-            <Typography variant="subtitle1" color="text.secondary">
-              {post.date}
+              {blogName}
             </Typography>
             <Typography variant="subtitle1" paragraph>
-              {post.description}
+              {shortArticle}
             </Typography>
-            <Typography variant="subtitle1" color="primary">
+            <Link to={`/blogs/${_id}`} style={{ textDecoration: "none" }}>
               Continue reading...
-            </Typography>
+            </Link>
           </CardContent>
           <CardMedia
             component="img"
             sx={{ width: 160, display: { xs: 'none', sm: 'block' } }}
-            image={post.image}
-            alt={post.imageLabel}
+            image={url}
           />
         </Card>
       </CardActionArea>
     </Grid>
   );
 }
-
-FeaturedPost.propTypes = {
-  post: PropTypes.shape({
-    date: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-    imageLabel: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-  }).isRequired,
-};
 
 export default FeaturedPost;

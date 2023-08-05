@@ -15,18 +15,13 @@ function Main(props) {
       xs={12}
       md={8}
     >
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h4" gutterBottom>
         {blogName}
       </Typography>
       <Divider />
       <Typography variant="body1" gutterBottom>
         {article}
       </Typography>
-      {/* {posts.map((post) => (
-        <Markdown className="markdown" key={post.substring(0, 40)}>
-          {post}
-        </Markdown>
-      ))} */}
     </Grid>
     </>
     

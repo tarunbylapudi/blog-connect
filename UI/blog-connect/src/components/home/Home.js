@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
@@ -6,25 +6,18 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import BlogCard from "../common/BlogCard";
 
 import classes from "./css/Home.module.css";
-import { useSelector, useDispatch } from "react-redux";
-import { getAllBlogsT } from "../../store/blog-actions";
-import { Link } from "react-router-dom";
+import { Link, redirect, useRouteLoaderData } from "react-router-dom";
+import axios from "axios";
+
+const base = process.env.REACT_APP_BASE_URL;
+const getAllBlogsURL = base + process.env.REACT_APP_ADD_GET_BLOGS_URL;
+
 
 const defaultTheme = createTheme();
 
-let isInitial = true;
 export default function Home() {
-  const dispatch = useDispatch();
-  const blogs = useSelector((state) => state.blog.blogs);
-
-  useEffect(() => {
-    if (isInitial) {
-      isInitial = false;
-      return;
-    }
-    console.log("useEffect");
-    dispatch(getAllBlogsT());
-  }, []);
+  const blogs = useRouteLoaderData("all-blogs");
+  const { data } = blogs;
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
@@ -33,14 +26,9 @@ export default function Home() {
         <Container sx={{ py: 8 }} maxWidth="lg">
           {/* End hero unit */}
           <Grid container spacing={3}>
-            {blogs.map((blog) => (
+            {data.map((blog) => (
               <Grid item key={blog._id} xs={12} sm={6} md={4}>
-                <Link
-                  to={`/blogs/${blog._id}`}
-                  style={{ textDecoration: "none" }}
-                >
-                  <BlogCard blog={blog} />
-                </Link>
+                <BlogCard blog={blog} />
               </Grid>
             ))}
           </Grid>
@@ -49,3 +37,10 @@ export default function Home() {
     </ThemeProvider>
   );
 }
+
+export async function loader({ request, params }) {
+  const response = await axios.get(getAllBlogsURL);
+  console.log(response.data);
+  return response.data;
+}
+

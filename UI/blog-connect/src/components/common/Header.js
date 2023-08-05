@@ -12,8 +12,10 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import { Link, NavLink } from "react-router-dom";
+import classes from './Header.module.css';
 
-const pages = ["Products", "Pricing", "Blog"];
+const pages = [{ name: "Blogs", path: "/blogs" }, { name: "My Blogs", path: "/myBlogs" }, { name: "Create Blog", path: "/blogs/create" }];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const Header = () => {
@@ -88,9 +90,18 @@ const Header = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+
+                <MenuItem key={page.name} >
+                  <NavLink to={page.path} style={({ isActive }) => {
+                    return {
+                      fontWeight: isActive ? "bold" : "",
+                      color: isActive ? "red" : "black",
+                    };
+                  }}>
+                    <Typography textAlign="center">{page.name}</Typography>
+                  </NavLink>
                 </MenuItem>
+
               ))}
             </Menu>
           </Box>
@@ -115,14 +126,25 @@ const Header = () => {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page}
-              </Button>
+              <Link to={page.path} style={{ textDecoration: "none" }}>
+                <Button
+                  key={page.name}
+                  // onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  {page.name}
+                </Button>
+              </Link>
             ))}
+            {/* <Link to={`/blogs`} style={{ textDecoration: "none" }}>
+              <Button sx={{ my: 2, color: "white", display: "block" }}>Blogs</Button>
+            </Link>
+            <Link to={`/blogs/create`} style={{ textDecoration: "none" }}>
+              <Button sx={{ my: 2, color: "white", display: "block" }}>Create Blog</Button>
+            </Link>
+            <Link to={`/blogs`} style={{ textDecoration: "none" }}>
+              <Button sx={{ my: 2, color: "white", display: "block" }}>My Blogs</Button>
+            </Link> */}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>

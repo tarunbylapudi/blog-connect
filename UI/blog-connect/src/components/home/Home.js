@@ -6,18 +6,28 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import BlogCard from "../common/BlogCard";
 
 import classes from "./css/Home.module.css";
-import { Link, redirect, useRouteLoaderData } from "react-router-dom";
+import { Link, redirect, useLoaderData, useRouteLoaderData } from "react-router-dom";
 import axios from "axios";
+import Filter from "../filter/filter";
 
 const base = process.env.REACT_APP_BASE_URL;
 const getAllBlogsURL = base + process.env.REACT_APP_ADD_GET_BLOGS_URL;
+const getMyBlogsURL = base + process.env.REACT_APP_MY_BLOGS;
 
 
 const defaultTheme = createTheme();
 
 export default function Home() {
   const blogs = useRouteLoaderData("all-blogs");
-  const { data } = blogs;
+  const myBlogs = useRouteLoaderData("my-blogs");
+  // const {data} = blogs
+  // const getBlogs=()=>{
+  //   if(blogs){
+  //     return blogs;
+  //   }
+  //   return myBlogs;
+  // }
+  const getBlogs = blogs ? blogs : myBlogs;
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
@@ -25,8 +35,17 @@ export default function Home() {
       <main className={classes.home}>
         <Container sx={{ py: 8 }} maxWidth="lg">
           {/* End hero unit */}
+          {/* {JSON.stringify(myBlogs.count)} */}
+          {/* {JSON.stringify(blogs.count)} */}
+          {/* {myBlogs.data.length}
+          {blogs.data.length} */}
+          {/* {getBlogs.data[0].blogName} */}
+          <div>
+          <Filter />
+          </div>
+          
           <Grid container spacing={3}>
-            {data.map((blog) => (
+            {getBlogs.data.map((blog) => (
               <Grid item key={blog._id} xs={12} sm={6} md={4}>
                 <BlogCard blog={blog} />
               </Grid>
@@ -39,8 +58,18 @@ export default function Home() {
 }
 
 export async function loader({ request, params }) {
-  const response = await axios.get(getAllBlogsURL);
-  console.log(response.data);
-  return response.data;
+  const Authorization =
+    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YzZhMmUzMTYxMWIxMWZhYWU5ZDQ2OCIsImlhdCI6MTY5MTA4ODA2NCwiZXhwIjoxNjkzNjgwMDY0fQ.KIWQTXEAl7wsT2PoFTIwpR5BXmPWgxEroKKXT2VEpDA";
+  if (request.url.includes("/myBlogs")) {
+    console.log("inside");
+    const response = await axios.get(getMyBlogsURL, { headers: { Authorization } });
+    console.log(response.data);
+    return response.data;
+  }
+  else {
+    const response = await axios.get(getAllBlogsURL);
+    console.log(response.data);
+    return response.data;
+  }
 }
 

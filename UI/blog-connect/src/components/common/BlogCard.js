@@ -7,6 +7,11 @@ import {
   CardActions,
 } from "@mui/material";
 import { Link, useSubmit } from "react-router-dom";
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import { blue, green, red } from '@mui/material/colors';
 
 const BlogCard = (props) => {
   const submit = useSubmit();
@@ -37,16 +42,26 @@ const BlogCard = (props) => {
       </CardContent>
       <CardActions>
         <Link to={`/blogs/${_id}`} style={{ textDecoration: "none" }}>
-          <Button size="small">View</Button>
+          {/* <Button size="small">View</Button> */}
+          <IconButton aria-label="delete" >
+            <VisibilityIcon sx={{ color: blue[900] }}/>
+          </IconButton>
         </Link>
 
         <Link to={`/blogs/${_id}/edit`} style={{ textDecoration: "none" }}>
-          <Button size="small">Edit</Button>
-        </Link>
+          {/* <Button size="small">Edit</Button> */}
+          <IconButton aria-label="delete" >
+            <ModeEditIcon  sx={{ color: green[700] }}/>
+          </IconButton>
 
-        <Button size="small" onClick={blogDeleteHandler}>
+        </Link>
+        <IconButton aria-label="delete" onClick={blogDeleteHandler}>
+          <DeleteIcon sx={{ color: red[900] }}/>
+        </IconButton>
+
+        {/* <Button size="small" onClick={blogDeleteHandler}>
           Delete
-        </Button>
+        </Button> */}
       </CardActions>
     </Card>
   );

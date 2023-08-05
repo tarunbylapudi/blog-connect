@@ -50,6 +50,7 @@ const router = createBrowserRouter([
           },
         ],
       },
+      { path: "myBlogs", element: <Home/>, loader: allBlogsLoader, id: "my-blogs"},
     ],
   },
 ]);

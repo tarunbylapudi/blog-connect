@@ -27,6 +27,7 @@ const router = createBrowserRouter([
         path: "blogs",
         id: "all-blogs",
         loader: allBlogsLoader,
+        // action: searchBlogsHandler,
         children: [
           { index: true, element: <Home /> },
           {

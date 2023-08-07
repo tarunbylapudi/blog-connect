@@ -28,6 +28,7 @@ export default function Home() {
   //   return myBlogs;
   // }
   const getBlogs = blogs ? blogs : myBlogs;
+  const uniqueCategory = [...new Set(getBlogs.data.map(blog => blog.category))];
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
@@ -40,17 +41,20 @@ export default function Home() {
           {/* {myBlogs.data.length}
           {blogs.data.length} */}
           {/* {getBlogs.data[0].blogName} */}
+          {/* {JSON.stringify(uniqueCategory)} */}
           <div>
-          <Filter />
+            <Filter
+              category={uniqueCategory}
+            />
           </div>
           
-          <Grid container spacing={3}>
-            {getBlogs.data.map((blog) => (
-              <Grid item key={blog._id} xs={12} sm={6} md={4}>
-                <BlogCard blog={blog} />
-              </Grid>
-            ))}
-          </Grid>
+            <Grid container spacing={3}>
+              {getBlogs.data.map((blog) => (
+                <Grid item key={blog._id} xs={12} sm={6} md={4}>
+                  <BlogCard blog={blog} />
+                </Grid>
+              ))}
+            </Grid>
         </Container>
       </main>
     </ThemeProvider>
@@ -67,9 +71,20 @@ export async function loader({ request, params }) {
     return response.data;
   }
   else {
+    console.log(request);
+    console.log(params);
+    const searchParams = new URL(request.url).searchParams;
+    console.log(searchParams.get("category"));
     const response = await axios.get(getAllBlogsURL);
     console.log(response.data);
     return response.data;
   }
 }
+
+// export async function action({ request, params}){
+//   console.log(request.formData.get("category"));
+//   // const response = await axios.get(getAllBlogsURL, {params: {category, toDate, fromDate}});
+//   // console.log(response.data);
+//   return null; 
+// }
 

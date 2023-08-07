@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import * as React from 'react';
 import { styled } from '@mui/material';
 import Paper from '@mui/material/Paper';
@@ -11,18 +11,34 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import LoadingButton from '@mui/lab/LoadingButton';
-import Box from '@mui/material/Box';
 import SaveIcon from '@mui/icons-material/Save';
+import { Link, useSubmit, useNavigate } from 'react-router-dom';
 
-function Filter() {
+function Filter(props) {
+    const submit = useSubmit();
+    const navigate = useNavigate();
+    const [toDate, setToDate] = React.useState("");
+    const [fromDate, setFromDate] = React.useState("");
+    const [category, setCategory] = React.useState('');
     const [loading, setLoading] = React.useState(true);
     function handleClick() {
-        setLoading(true);
+        navigate(`/blogs?category=${category}&fromDate=${fromDate.toISOString()}&toDate=${toDate.toISOString()}`)
     }
-    const [age, setAge] = React.useState('');
+    
+    const filterEligibility = () => {
+        // console.log(category,toDate,fromDate);
+        // console.log(category || (toDate && fromDate));
+        // console.log()
+        // if(category ||(toDate & fromDate)){
+        //     console.log("inside");
+        // }
+        return !(category | (toDate & fromDate))
+    }
 
-    const handleChange = (event) => {
-        setAge(event.target.value);
+    React.useEffect(()=>{filterEligibility()}, [filterEligibility,category,toDate,fromDate]);
+
+    const handleCategoryChange = (event) => {
+        setCategory(event.target.value);
     };
 
     const Item = styled(Paper)(({ theme }) => ({
@@ -32,52 +48,67 @@ function Filter() {
         textAlign: 'center',
         color: theme.palette.text.secondary,
     }));
+
     return (
         // <Container maxWidth="md"></Container>
         <Grid container spacing={2} sx={{
-            marginBottom: "20px",
+            marginBottom: "30px",
         }}>
             <Grid item xs={12} sm={6} md={6}>
                 <Item>
+                    {/* {JSON.stringify(toDate)} */}
+                    {/* {toDate} */}
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker />
+                        <DatePicker
+                            value={fromDate}
+                            onChange={(newValue) => setFromDate(newValue)} />
                         {/* <span >
                                 to
                             </span> */}
-                        <DatePicker />
+                        <DatePicker
+                            value={toDate}
+                            onChange={(newValue) => setToDate(newValue)}
+                        />
                     </LocalizationProvider>
                 </Item>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
                 <Item>
                     <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                        {/* {category} */}
+                        <InputLabel id="demo-simple-select-label">Category</InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
-                            value={age}
-                            label="Age"
-                            onChange={handleChange}
+                            value={category}
+                            label="Category"
+                            onChange={handleCategoryChange}
                         >
-                            <MenuItem value={10}>Ten</MenuItem>
+                            {/* {JSON.stringify(props.category)} */}
+                            {props.category.map((uniquecat) => (
+                                <MenuItem value={uniquecat}>{uniquecat}</MenuItem>
+                            ))}
+                            {/* <MenuItem value={10}>Ten</MenuItem>
                             <MenuItem value={20}>Twenty</MenuItem>
-                            <MenuItem value={30}>Thirty</MenuItem>
+                            <MenuItem value={30}>Thirty</MenuItem> */}
                         </Select>
                     </FormControl>
                 </Item>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
                 <Item>
-                    <LoadingButton
-                        color="secondary"
-                        onClick={handleClick}
-                        loading={loading}
-                        loadingPosition="start"
-                        startIcon={<SaveIcon />}
-                        variant="contained"
-                    >
-                        <span>Save</span>
-                    </LoadingButton>
+                        <Button
+                            disabled={filterEligibility}
+                            color="secondary"
+                            onClick={handleClick}
+                            // loading={loading}
+                            // loadingPosition="start"
+                            startIcon={<SaveIcon />}
+                            variant="contained"
+                        >
+                            <span>Save</span>
+                        </Button>
+                    
                 </Item>
             </Grid>
         </Grid>

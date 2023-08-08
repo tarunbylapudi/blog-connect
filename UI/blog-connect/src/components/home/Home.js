@@ -6,14 +6,18 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import BlogCard from "../common/BlogCard";
 
 import classes from "./css/Home.module.css";
-import { Link, redirect, useLoaderData, useRouteLoaderData } from "react-router-dom";
+import {
+  Link,
+  redirect,
+  useLoaderData,
+  useRouteLoaderData,
+} from "react-router-dom";
 import axios from "axios";
 import Filter from "../filter/filter";
 
 const base = process.env.REACT_APP_BASE_URL;
 const getAllBlogsURL = base + process.env.REACT_APP_ADD_GET_BLOGS_URL;
 const getMyBlogsURL = base + process.env.REACT_APP_MY_BLOGS;
-
 
 const defaultTheme = createTheme();
 
@@ -28,7 +32,10 @@ export default function Home() {
   //   return myBlogs;
   // }
   const getBlogs = blogs ? blogs : myBlogs;
-  const uniqueCategory = [...new Set(getBlogs.data.map(blog => blog.category))];
+  const uniqueCategory = [
+    "All",
+    ...new Set(getBlogs.data.map((blog) => blog.category)),
+  ];
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
@@ -43,39 +50,67 @@ export default function Home() {
           {/* {getBlogs.data[0].blogName} */}
           {/* {JSON.stringify(uniqueCategory)} */}
           <div>
-            <Filter
-              category={uniqueCategory}
-            />
+            <Filter category={uniqueCategory} />
           </div>
-          
-            <Grid container spacing={3}>
-              {getBlogs.data.map((blog) => (
-                <Grid item key={blog._id} xs={12} sm={6} md={4}>
-                  <BlogCard blog={blog} />
-                </Grid>
-              ))}
-            </Grid>
+
+          <Grid container spacing={3}>
+            {getBlogs.data.map((blog) => (
+              <Grid item key={blog._id} xs={12} sm={6} md={4}>
+                <BlogCard blog={blog} />
+              </Grid>
+            ))}
+          </Grid>
         </Container>
       </main>
     </ThemeProvider>
   );
 }
 
+const paramConstructor = (request, searchParams) => {
+  let params = null;
+  if (
+    request.url.includes("category") &&
+    request.url.includes("fromDate") &&
+    request.url.includes("toDate")
+  ) {
+    params = {
+      category: searchParams.get("category"),
+      fromDate: searchParams.get("fromDate"),
+      toDate: searchParams.get("toDate"),
+    };
+  } else if (
+    request.url.includes("fromDate") &&
+    request.url.includes("toDate")
+  ) {
+    params = {
+      fromDate: searchParams.get("fromDate"),
+      toDate: searchParams.get("toDate"),
+    };
+  } else if (request.url.includes("category")) {
+    params = {
+      category: searchParams.get("category"),
+    };
+  }
+
+  return params;
+};
+
 export async function loader({ request, params }) {
   const Authorization =
     "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YzZhMmUzMTYxMWIxMWZhYWU5ZDQ2OCIsImlhdCI6MTY5MTA4ODA2NCwiZXhwIjoxNjkzNjgwMDY0fQ.KIWQTXEAl7wsT2PoFTIwpR5BXmPWgxEroKKXT2VEpDA";
   if (request.url.includes("/myBlogs")) {
     console.log("inside");
-    const response = await axios.get(getMyBlogsURL, { headers: { Authorization } });
+    const response = await axios.get(getMyBlogsURL, {
+      headers: { Authorization },
+    });
     console.log(response.data);
     return response.data;
-  }
-  else {
-    console.log(request);
-    console.log(params);
+  } else {
     const searchParams = new URL(request.url).searchParams;
-    console.log(searchParams.get("category"));
-    const response = await axios.get(getAllBlogsURL);
+
+    const params = paramConstructor(request, searchParams);
+
+    const response = await axios.get(getAllBlogsURL, { params });
     console.log(response.data);
     return response.data;
   }
@@ -85,6 +120,5 @@ export async function loader({ request, params }) {
 //   console.log(request.formData.get("category"));
 //   // const response = await axios.get(getAllBlogsURL, {params: {category, toDate, fromDate}});
 //   // console.log(response.data);
-//   return null; 
+//   return null;
 // }
-

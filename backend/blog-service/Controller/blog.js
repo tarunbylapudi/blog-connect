@@ -8,6 +8,9 @@ exports.getBlogs = async (req, res, next) => {
   if (req.query.category) {
     query = { category: req.query.category };
   }
+  if (req.query.category === "All") {
+    query = {};
+  }
 
   if (req.query.toDate && req.query.fromDate) {
     const { fromDate, toDate } = req.query;

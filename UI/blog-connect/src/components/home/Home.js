@@ -14,6 +14,7 @@ import {
 } from "react-router-dom";
 import axios from "axios";
 import Filter from "../filter/filter";
+import { getAuthToken } from "../../utils/auth";
 
 const base = process.env.REACT_APP_BASE_URL;
 const getAllBlogsURL = base + process.env.REACT_APP_ADD_GET_BLOGS_URL;
@@ -96,8 +97,8 @@ const paramConstructor = (request, searchParams) => {
 };
 
 export async function loader({ request, params }) {
-  const Authorization =
-    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YzZhMmUzMTYxMWIxMWZhYWU5ZDQ2OCIsImlhdCI6MTY5MTA4ODA2NCwiZXhwIjoxNjkzNjgwMDY0fQ.KIWQTXEAl7wsT2PoFTIwpR5BXmPWgxEroKKXT2VEpDA";
+  const Authorization = "Bearer " + getAuthToken();
+  console.log(Authorization);
   if (request.url.includes("/myBlogs")) {
     console.log("inside");
     const response = await axios.get(getMyBlogsURL, {

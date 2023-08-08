@@ -11,6 +11,7 @@ import Card from "@mui/material/Card";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
+import { getAuthToken } from "../../../utils/auth";
 
 const base = process.env.REACT_APP_BASE_URL;
 const createBlogUrl = base + process.env.REACT_APP_CREATE_BLOG;
@@ -110,8 +111,7 @@ const BlogForm = (props) => {
 export default BlogForm;
 
 export async function action({ request, params }) {
-  const Authorization =
-    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YzZhMmUzMTYxMWIxMWZhYWU5ZDQ2OCIsImlhdCI6MTY5MTA4ODA2NCwiZXhwIjoxNjkzNjgwMDY0fQ.KIWQTXEAl7wsT2PoFTIwpR5BXmPWgxEroKKXT2VEpDA";
+  const Authorization = "Bearer " + getAuthToken();
   const data = await request.formData();
   console.log(request.method);
 

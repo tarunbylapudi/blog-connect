@@ -12,29 +12,24 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-import { Link, NavLink } from "react-router-dom";
-import classes from './Header.module.css';
+import { Form, Link, NavLink } from "react-router-dom";
+import classes from "./Header.module.css";
 
-const pages = [{ name: "Blogs", path: "/blogs" }, { name: "My Blogs", path: "/myBlogs" }, { name: "Create Blog", path: "/blogs/create" }];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const pages = [
+  { name: "Blogs", path: "/blogs", isAuthReq: false },
+  { name: "My Blogs", path: "/myBlogs", isAuthReq: true },
+  { name: "Create Blog", path: "/blogs/create", isAuthReq: true },
+];
 
-const Header = () => {
+const Header = ({ isLoggedIn }) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
   };
 
   return (
@@ -90,18 +85,19 @@ const Header = () => {
               }}
             >
               {pages.map((page) => (
-
-                <MenuItem key={page.name} >
-                  <NavLink to={page.path} style={({ isActive }) => {
-                    return {
-                      fontWeight: isActive ? "bold" : "",
-                      color: isActive ? "red" : "black",
-                    };
-                  }}>
+                <MenuItem key={page.name}>
+                  <NavLink
+                    to={page.path}
+                    style={({ isActive }) => {
+                      return {
+                        fontWeight: isActive ? "bold" : "",
+                        color: isActive ? "red" : "black",
+                      };
+                    }}
+                  >
                     <Typography textAlign="center">{page.name}</Typography>
                   </NavLink>
                 </MenuItem>
-
               ))}
             </Menu>
           </Box>
@@ -129,53 +125,28 @@ const Header = () => {
               <Link to={page.path} style={{ textDecoration: "none" }}>
                 <Button
                   key={page.name}
-                  // onClick={handleCloseNavMenu}
                   sx={{ my: 2, color: "white", display: "block" }}
                 >
                   {page.name}
                 </Button>
               </Link>
             ))}
-            {/* <Link to={`/blogs`} style={{ textDecoration: "none" }}>
-              <Button sx={{ my: 2, color: "white", display: "block" }}>Blogs</Button>
-            </Link>
-            <Link to={`/blogs/create`} style={{ textDecoration: "none" }}>
-              <Button sx={{ my: 2, color: "white", display: "block" }}>Create Blog</Button>
-            </Link>
-            <Link to={`/blogs`} style={{ textDecoration: "none" }}>
-              <Button sx={{ my: 2, color: "white", display: "block" }}>My Blogs</Button>
-            </Link> */}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+          {isLoggedIn && (
+            <Box sx={{ flexGrow: 0 }}>
+              <Form action="/logout" method="post">
+                <Button
+                  textAlign="center"
+                  type="submit"
+                  color="error"
+                  variant="contained"
+                >
+                  Logout
+                </Button>
+              </Form>
+            </Box>
+          )}
         </Toolbar>
       </Container>
     </AppBar>

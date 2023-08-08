@@ -12,34 +12,20 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import styles from "./css/SignIn.module.css";
-import { Form, Link } from "react-router-dom";
+import { Form, Link, redirect } from "react-router-dom";
 
 import { login } from "../../api/auth";
 import { Card } from "@mui/material";
+import axios from "axios";
 
 // TODO remove, this demo shouldn't need to reset the theme.
+
+const base = process.env.REACT_APP_BASE_URL;
+const loginURL = base + process.env.REACT_APP_LOGIN_URL;
 
 const defaultTheme = createTheme();
 
 const SignIn = (props) => {
-  const SignInSignUpToggle = () => {
-    props.onSignSignUpHandler();
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-
-    const response = await login({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-
-    if (response) {
-      localStorage.setItem("token", response.token);
-    }
-  };
-
   return (
     <ThemeProvider theme={defaultTheme}>
       <Card>
@@ -59,8 +45,8 @@ const SignIn = (props) => {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
-            <Box onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-              <Form>
+            <Box noValidate sx={{ mt: 1 }}>
+              <Form method="post">
                 <TextField
                   margin="normal"
                   required
@@ -81,10 +67,7 @@ const SignIn = (props) => {
                   id="password"
                   autoComplete="current-password"
                 />
-                <FormControlLabel
-                  control={<Checkbox value="remember" color="primary" />}
-                  label="Remember me"
-                />
+
                 <Button
                   type="submit"
                   fullWidth
@@ -97,7 +80,9 @@ const SignIn = (props) => {
               <Grid container>
                 <Grid item xs></Grid>
                 <Grid item>
-                  <Link to={"/register"}>{"Don't have an account? Sign Up"}</Link>
+                  <Link to={"/register"} style={{ textDecoration: "none" }}>
+                    {"Don't have an account? Sign Up"}
+                  </Link>
                 </Grid>
               </Grid>
             </Box>
@@ -109,3 +94,23 @@ const SignIn = (props) => {
 };
 
 export default SignIn;
+
+export async function action({ request, params }) {
+  const data = await request.formData();
+  const loginData = {
+    email: data.get("email"),
+    password: data.get("password"),
+  };
+  console.log(loginData);
+  try {
+    const res = await axios.post(loginURL, loginData);
+    console.log(res.data);
+    if (res.data.token) {
+      localStorage.setItem("token", res.data.token);
+    }
+    return redirect("/blogs");
+  } catch (error) {
+    console.log(error.response.data);
+    throw error.response.data;
+  }
+}

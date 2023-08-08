@@ -1,10 +1,12 @@
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
-import { Outlet } from "react-router-dom";
+import { Outlet, useRouteLoaderData } from "react-router-dom";
 const RootLayout = () => {
+  const isLoggedIn = useRouteLoaderData("token-loader");
+
   return (
     <>
-      <Header />
+      <Header isLoggedIn={isLoggedIn} />
       <Outlet />
       <Footer />
     </>

@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
-import SignIn from "../components/login/SignIn";
-import SignUp from "../components/login/SignUp";
+import SignIn, { action as loginAction } from "../components/login/SignIn";
+import SignUp, { action as signUpAction } from "../components/login/SignUp";
+import { action as logoutAction } from "../pages/Logout";
 import BlogForm, {
   action as blogHandlerAction,
 } from "../components/blog/create/BlogForm";
@@ -9,6 +10,7 @@ import Blog, {
   loader as blogLoader,
   action as deleteAction,
 } from "../components/blog/Blog";
+import { tokenLoader } from "../utils/auth";
 
 import App from "../App";
 import RootLayout from "./RootLayout";
@@ -19,10 +21,13 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
+    loader: tokenLoader,
+    id: "token-loader",
     children: [
-      { index: true, element: <SignIn /> },
-      { path: "register", element: <SignUp /> },
-      { path: "login", element: <SignIn /> },
+      { index: true, element: <SignIn />, action: loginAction },
+      { path: "register", element: <SignUp />, action: signUpAction },
+      { path: "login", element: <SignIn />, action: loginAction },
+      { path: "logout", action: logoutAction },
       {
         path: "blogs",
         id: "all-blogs",
@@ -51,7 +56,12 @@ const router = createBrowserRouter([
           },
         ],
       },
-      { path: "myBlogs", element: <Home/>, loader: allBlogsLoader, id: "my-blogs"},
+      {
+        path: "myBlogs",
+        element: <Home />,
+        loader: allBlogsLoader,
+        id: "my-blogs",
+      },
     ],
   },
 ]);

@@ -6,7 +6,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import BlogCard from "../common/BlogCard";
 
 import classes from "./css/Home.module.css";
-import { useRouteLoaderData } from "react-router-dom";
+import { redirect, useRouteLoaderData } from "react-router-dom";
 import axios from "axios";
 import Filter from "../filter/filter";
 import { checkAuthLoader, getAuthToken } from "../../utils/auth";
@@ -93,7 +93,11 @@ const paramConstructor = (request, searchParams) => {
 
 export async function loader({ request, params }) {
   if (request.url.includes("/myBlogs")) {
-    await checkAuthLoader();
+    const token = getAuthToken();
+    if (!token) {
+      console.log("djnjsfnljsldfjl")
+      return redirect("/login");
+    }
     const Authorization = "Bearer " + getAuthToken();
     const response = await axios.get(getMyBlogsURL, {
       headers: { Authorization },

@@ -8,7 +8,7 @@ import Blog, {
   loader as blogLoader,
   action as deleteAction,
 } from "../components/blog/Blog";
-import { tokenLoader, checkAuthLoader } from "../utils/auth";
+import { getIsLoggedIn, checkAuthLoader } from "../utils/auth";
 
 import RootLayout from "./RootLayout";
 import EditBlog from "../pages/EditBlog";
@@ -18,7 +18,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
-    loader: tokenLoader,
+    loader: getIsLoggedIn,
     id: "token-loader",
     children: [
       { index: true, element: <SignIn />, action: loginAction },

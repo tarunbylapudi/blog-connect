@@ -6,15 +6,10 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import BlogCard from "../common/BlogCard";
 
 import classes from "./css/Home.module.css";
-import {
-  Link,
-  redirect,
-  useLoaderData,
-  useRouteLoaderData,
-} from "react-router-dom";
+import { useRouteLoaderData } from "react-router-dom";
 import axios from "axios";
 import Filter from "../filter/filter";
-import { getAuthToken } from "../../utils/auth";
+import { checkAuthLoader, getAuthToken } from "../../utils/auth";
 
 const base = process.env.REACT_APP_BASE_URL;
 const getAllBlogsURL = base + process.env.REACT_APP_ADD_GET_BLOGS_URL;
@@ -97,10 +92,9 @@ const paramConstructor = (request, searchParams) => {
 };
 
 export async function loader({ request, params }) {
-  const Authorization = "Bearer " + getAuthToken();
-  console.log(Authorization);
   if (request.url.includes("/myBlogs")) {
-    console.log("inside");
+    await checkAuthLoader();
+    const Authorization = "Bearer " + getAuthToken();
     const response = await axios.get(getMyBlogsURL, {
       headers: { Authorization },
     });
@@ -116,10 +110,3 @@ export async function loader({ request, params }) {
     return response.data;
   }
 }
-
-// export async function action({ request, params}){
-//   console.log(request.formData.get("category"));
-//   // const response = await axios.get(getAllBlogsURL, {params: {category, toDate, fromDate}});
-//   // console.log(response.data);
-//   return null;
-// }

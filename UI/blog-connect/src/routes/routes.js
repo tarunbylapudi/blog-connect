@@ -2,17 +2,14 @@ import { createBrowserRouter } from "react-router-dom";
 import SignIn, { action as loginAction } from "../components/login/SignIn";
 import SignUp, { action as signUpAction } from "../components/login/SignUp";
 import { action as logoutAction } from "../pages/Logout";
-import BlogForm, {
-  action as blogHandlerAction,
-} from "../components/blog/create/BlogForm";
+import { action as blogHandlerAction } from "../components/blog/create/BlogForm";
 import Home, { loader as allBlogsLoader } from "../components/home/Home";
 import Blog, {
   loader as blogLoader,
   action as deleteAction,
 } from "../components/blog/Blog";
-import { tokenLoader } from "../utils/auth";
+import { tokenLoader, checkAuthLoader } from "../utils/auth";
 
-import App from "../App";
 import RootLayout from "./RootLayout";
 import EditBlog from "../pages/EditBlog";
 import CreateBlog from "../pages/CreateBlog";
@@ -46,6 +43,7 @@ const router = createBrowserRouter([
                 path: "edit",
                 element: <EditBlog />,
                 action: blogHandlerAction,
+                loader: checkAuthLoader,
               },
             ],
           },
@@ -53,6 +51,7 @@ const router = createBrowserRouter([
             path: "create",
             element: <CreateBlog />,
             action: blogHandlerAction,
+            loader: checkAuthLoader,
           },
         ],
       },

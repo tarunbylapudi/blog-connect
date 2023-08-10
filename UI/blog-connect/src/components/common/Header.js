@@ -25,24 +25,28 @@ const Header = () => {
     setAnchorElNav(null);
   };
 
+  const showSnack = (message, variant) => {
+    enqueueSnackbar(message, {
+      variant,
+      autoHideDuration: 3000,
+    });
+  };
+
   const createBlogHandler = () => {
-    console.log(isLoggedIn);
     if (!isLoggedIn) {
-      enqueueSnackbar("Please Login first!", {
-        variant: "error",
-        autoHideDuration: 3000,
-      });
+      showSnack("Please Login first!", "error");
     }
   };
 
   const myBlogsHandler = () => {
-    console.log("intoSnack");
     if (!isLoggedIn) {
-      enqueueSnackbar("Please Login first!", {
-        variant: "error",
-        autoHideDuration: 3000,
-      });
-      // navigate("/login");
+      showSnack("Please Login first!", "error");
+    }
+  };
+
+  const logoHandler = () => {
+    if (!isLoggedIn) {
+      showSnack("Please Login first!", "error");
     }
   };
 
@@ -52,23 +56,27 @@ const Header = () => {
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="/"
-              sx={{
-                mr: 2,
-                display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
-              }}
+            <Link
+              to={isLoggedIn ? "/blogs" : "/"}
+              style={{ textDecoration: "none" }}
             >
-              LOGO
-            </Typography>
+              <Typography
+                variant="h6"
+                noWrap
+                sx={{
+                  mr: 2,
+                  display: { xs: "none", md: "flex" },
+                  fontFamily: "monospace",
+                  fontWeight: 700,
+                  letterSpacing: ".3rem",
+                  color: "white",
+                  textDecoration: "none",
+                }}
+                onClick={logoHandler}
+              >
+                LOGO
+              </Typography>
+            </Link>
 
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <IconButton

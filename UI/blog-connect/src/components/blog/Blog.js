@@ -43,6 +43,7 @@ export default function Blog() {
             <Sidebar
               title={blogData.data.authorName}
               description={blogData.data.createdAt}
+              category={blogData.data.category}
             />
           </Grid>
         </main>

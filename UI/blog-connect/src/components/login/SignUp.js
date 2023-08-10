@@ -3,13 +3,14 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import { Form, Link, redirect } from "react-router-dom";
+import { Form, Link, json, redirect, useActionData } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Alert from "@mui/material/Alert";
 import axios from "axios";
 
 const base = process.env.REACT_APP_BASE_URL;
@@ -20,6 +21,34 @@ const registerURL = base + process.env.REACT_APP_REGISTER_URL;
 const defaultTheme = createTheme();
 
 const SignUp = (props) => {
+  const signUpResponse = useActionData();
+  const [errors, setErrors] = React.useState([]);
+
+  const ValidationErrors = (signUpResponse) => {
+    if (signUpResponse) {
+      if (signUpResponse.error.error.includes("email")) {
+        setErrors(["Please add a valid email"]);
+      }
+      if (signUpResponse.error.error.includes("password")) {
+        setErrors([
+          "password must has atleast 8 characters that include atleast 1 lower case, 1 upper case, 1 number and 1 special character",
+        ]);
+      }
+      if (
+        signUpResponse.error.error.includes("email") &&
+        signUpResponse.error.error.includes("password")
+      ) {
+        setErrors([
+          "Please add a valid email",
+          "password must has atleast 8 characters that include atleast 1 lower case, 1 upper case, 1 number and 1 special character",
+        ]);
+      }
+      console.log(errors);
+    }
+  };
+  React.useEffect(() => {
+    ValidationErrors(signUpResponse);
+  }, [signUpResponse]);
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
@@ -35,6 +64,7 @@ const SignUp = (props) => {
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
+          {errors}
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
@@ -75,6 +105,18 @@ const SignUp = (props) => {
                   />
                 </Grid>
               </Grid>
+              {errors[0]}
+              {errors.length > 0 &&
+                errors.map((error) => (
+                  <Alert severity="error" variant="outlined">
+                    {error}
+                  </Alert>
+                ))}
+              {/* {signUpResponse && (
+                <Alert severity="error" variant="outlined">
+                  This email is already registered!
+                </Alert>
+              )} */}
               <Button
                 type="submit"
                 fullWidth
@@ -117,8 +159,6 @@ export async function action({ request, params }) {
     console.log(res.data.token);
     return redirect("/blogs");
   } catch (error) {
-    throw error.response.data;
+    return json({ error: error.response.data });
   }
-
-  return null;
 }

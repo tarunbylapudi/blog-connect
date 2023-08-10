@@ -3,18 +3,14 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import styles from "./css/SignIn.module.css";
-import { Form, Link, redirect } from "react-router-dom";
-
-import { login } from "../../api/auth";
+import { Form, json, Link, redirect, useActionData } from "react-router-dom";
+import Alert from "@mui/material/Alert";
 import { Card } from "@mui/material";
 import axios from "axios";
 
@@ -26,6 +22,7 @@ const loginURL = base + process.env.REACT_APP_LOGIN_URL;
 const defaultTheme = createTheme();
 
 const SignIn = (props) => {
+  const loginResponse = useActionData();
   return (
     <ThemeProvider theme={defaultTheme}>
       <Card>
@@ -67,7 +64,11 @@ const SignIn = (props) => {
                   id="password"
                   autoComplete="current-password"
                 />
-
+                {loginResponse && (
+                  <Alert severity="error" variant="outlined">
+                    {loginResponse.error.error}
+                  </Alert>
+                )}
                 <Button
                   type="submit"
                   fullWidth
@@ -111,6 +112,6 @@ export async function action({ request, params }) {
     return redirect("/blogs");
   } catch (error) {
     console.log(error.response.data);
-    throw error.response.data;
+    return json({ error: error.response.data });
   }
 }

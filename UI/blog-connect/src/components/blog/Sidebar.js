@@ -34,8 +34,13 @@ function Sidebar(props) {
           subheader={formattedDate}
         />
       </Paper>
-
-      <Typography variant="h6" gutterBottom sx={{ mt: 3 }}>
+      <Paper elevation={0} sx={{ bgcolor: "grey.200" }}>
+        <Typography sx={{ bgcolor: "grey.200" }} variant="h6" gutterBottom>
+          Category
+        </Typography>
+        <CardHeader subheader={props.category} />
+      </Paper>
+      <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
         Social
       </Typography>
       {social.map((network) => (

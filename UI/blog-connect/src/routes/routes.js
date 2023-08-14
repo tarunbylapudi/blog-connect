@@ -13,11 +13,13 @@ import { getIsLoggedIn, checkAuthLoader } from "../utils/auth";
 import RootLayout from "./RootLayout";
 import EditBlog from "../pages/EditBlog";
 import CreateBlog from "../pages/CreateBlog";
+import NotFound from "../pages/NotFound";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
+    errorElement: <NotFound />,
     loader: getIsLoggedIn,
     id: "token-loader",
     children: [

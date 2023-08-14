@@ -9,7 +9,15 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Form, json, Link, redirect, useActionData } from "react-router-dom";
+import {
+  Form,
+  json,
+  Link,
+  redirect,
+  useActionData,
+  useRouteLoaderData,
+  useNavigate,
+} from "react-router-dom";
 import Alert from "@mui/material/Alert";
 import { Card } from "@mui/material";
 import axios from "axios";
@@ -22,6 +30,13 @@ const loginURL = base + process.env.REACT_APP_LOGIN_URL;
 const defaultTheme = createTheme();
 
 const SignIn = (props) => {
+  const navigate = useNavigate();
+  const isLoggedIn = useRouteLoaderData("token-loader");
+  React.useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/blogs")
+    }
+  }, []);
   const loginResponse = useActionData();
   return (
     <ThemeProvider theme={defaultTheme}>

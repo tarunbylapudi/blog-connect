@@ -1,5 +1,10 @@
 import React from "react";
-import { useLoaderData, useRouteLoaderData, redirect } from "react-router-dom";
+import {
+  useLoaderData,
+  useRouteLoaderData,
+  redirect,
+  json,
+} from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
@@ -55,9 +60,14 @@ export default function Blog() {
 export async function loader({ request, params }) {
   const url = `${blogURL}/${params.id}`;
   console.log(url);
-  const response = await axios.get(url);
-  console.log(response.data);
-  return response.data;
+  try {
+    const response = await axios.get(url);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.log(error.response.data.error);
+    throw json({ errorMsg: error.response.data.error });
+  }
 }
 export async function action({ request, params }) {
   const Authorization = "Bearer " + getAuthToken();

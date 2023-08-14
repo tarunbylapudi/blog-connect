@@ -3,7 +3,15 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import { Form, Link, json, redirect, useActionData } from "react-router-dom";
+import {
+  Form,
+  Link,
+  json,
+  redirect,
+  useActionData,
+  useNavigate,
+  useRouteLoaderData,
+} from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -21,6 +29,8 @@ const registerURL = base + process.env.REACT_APP_REGISTER_URL;
 const defaultTheme = createTheme();
 
 const SignUp = (props) => {
+  const navigate = useNavigate();
+  const isLoggedIn = useRouteLoaderData("token-loader");
   const signUpResponse = useActionData();
   const [errors, setErrors] = React.useState([]);
 
@@ -49,6 +59,13 @@ const SignUp = (props) => {
   React.useEffect(() => {
     ValidationErrors(signUpResponse);
   }, [signUpResponse]);
+
+  React.useEffect(() => {
+    console.log("useEffect");
+    if (isLoggedIn) {
+      navigate("/blogs");
+    }
+  }, []);
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">

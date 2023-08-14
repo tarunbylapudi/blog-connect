@@ -6,27 +6,26 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import BlogCard from "../common/BlogCard";
 
 import classes from "./css/Home.module.css";
-import { redirect, useRouteLoaderData } from "react-router-dom";
+import { json, redirect, useRouteLoaderData } from "react-router-dom";
 import axios from "axios";
 import Filter from "../filter/filter";
 import { checkAuthLoader, getAuthToken } from "../../utils/auth";
+import { Box, Button, Link, Typography } from "@mui/material";
+import { grey } from "@mui/material/colors";
+import EmptyResults from "../common/EmptyResults";
 
 const base = process.env.REACT_APP_BASE_URL;
 const getAllBlogsURL = base + process.env.REACT_APP_ADD_GET_BLOGS_URL;
+//const getAllBlogsURL = "jbjkkkjb";
 const getMyBlogsURL = base + process.env.REACT_APP_MY_BLOGS;
 
 const defaultTheme = createTheme();
+const primary = grey[800];
 
 export default function Home() {
   const blogs = useRouteLoaderData("all-blogs");
   const myBlogs = useRouteLoaderData("my-blogs");
-  // const {data} = blogs
-  // const getBlogs=()=>{
-  //   if(blogs){
-  //     return blogs;
-  //   }
-  //   return myBlogs;
-  // }
+
   const getBlogs = blogs ? blogs : myBlogs;
   const uniqueCategory = [
     "All",
@@ -38,23 +37,20 @@ export default function Home() {
 
       <main className={classes.home}>
         <Container sx={{ py: 8 }} maxWidth="lg">
-          {/* End hero unit */}
-          {/* {JSON.stringify(myBlogs.count)} */}
-          {/* {JSON.stringify(blogs.count)} */}
-          {/* {myBlogs.data.length}
-          {blogs.data.length} */}
-          {/* {getBlogs.data[0].blogName} */}
-          {/* {JSON.stringify(uniqueCategory)} */}
           <div>
             <Filter category={uniqueCategory} />
           </div>
 
           <Grid container spacing={3}>
-            {getBlogs.data.map((blog) => (
-              <Grid item key={blog._id} xs={12} sm={6} md={4}>
-                <BlogCard blog={blog} />
-              </Grid>
-            ))}
+            {getBlogs.data.length > 0 &&
+              getBlogs.data.map((blog) => (
+                <Grid item key={blog._id} xs={12} sm={6} md={4}>
+                  <BlogCard blog={blog} />
+                </Grid>
+              ))}
+            {getBlogs.data.length === 0 && (
+              <EmptyResults text={"No results found for selected criteria."} />
+            )}
           </Grid>
         </Container>
       </main>
@@ -95,22 +91,30 @@ export async function loader({ request, params }) {
   if (request.url.includes("/myBlogs")) {
     const token = getAuthToken();
     if (!token) {
-      console.log("djnjsfnljsldfjl")
       return redirect("/login");
     }
     const Authorization = "Bearer " + getAuthToken();
-    const response = await axios.get(getMyBlogsURL, {
-      headers: { Authorization },
-    });
-    console.log(response.data);
-    return response.data;
+    try {
+      const response = await axios.get(getMyBlogsURL, {
+        headers: { Authorization },
+      });
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.log(error.status);
+      throw json({ error: error.response.data.error });
+    }
   } else {
     const searchParams = new URL(request.url).searchParams;
 
     const params = paramConstructor(request, searchParams);
-
-    const response = await axios.get(getAllBlogsURL, { params });
-    console.log(response.data);
-    return response.data;
+    try {
+      const response = await axios.get(getAllBlogsURL, { params });
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.log(error.status);
+      throw json({ error: error.response.data.error });
+    }
   }
 }

@@ -18,9 +18,9 @@ import {
   useRouteLoaderData,
   useNavigate,
 } from "react-router-dom";
-import Alert from "@mui/material/Alert";
 import { Card } from "@mui/material";
 import axios from "axios";
+import Alertt from "../common/Alertt";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
@@ -34,10 +34,24 @@ const SignIn = (props) => {
   const isLoggedIn = useRouteLoaderData("token-loader");
   React.useEffect(() => {
     if (isLoggedIn) {
-      navigate("/blogs")
+      navigate("/blogs");
     }
   }, []);
+  const [open, setOpen] = React.useState(false);
+  const [errorMsg, seterrorMsg] = React.useState("");
   const loginResponse = useActionData();
+  React.useEffect(() => {
+    if (loginResponse) {
+      if (loginResponse.errorMsg !== undefined) {
+        seterrorMsg(loginResponse.errorMsg);
+        console.log(errorMsg);
+        setOpen(true);
+      }
+    }
+  }, [loginResponse]);
+  const AlertCloseHandler = () => {
+    setOpen(false);
+  };
   return (
     <ThemeProvider theme={defaultTheme}>
       <Card>
@@ -79,11 +93,11 @@ const SignIn = (props) => {
                   id="password"
                   autoComplete="current-password"
                 />
-                {loginResponse && (
-                  <Alert severity="error" variant="outlined">
-                    {loginResponse.error.error}
-                  </Alert>
-                )}
+                <Alertt
+                  open={open}
+                  AlertCloseHandler={AlertCloseHandler}
+                  message={errorMsg}
+                />
                 <Button
                   type="submit"
                   fullWidth
@@ -126,7 +140,9 @@ export async function action({ request, params }) {
     }
     return redirect("/blogs");
   } catch (error) {
-    console.log(error.response.data);
-    return json({ error: error.response.data });
+    return json(
+      { errorMsg: error.response.data.error },
+      { status: error.response.status }
+    );
   }
 }

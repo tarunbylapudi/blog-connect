@@ -4,6 +4,7 @@ import {
   useRouteLoaderData,
   redirect,
   json,
+  useNavigate,
 } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
@@ -18,6 +19,8 @@ import Sidebar from "./Sidebar";
 import FeaturedPost from "./FeaturedPost";
 import axios from "axios";
 import { getAuthToken } from "../../utils/auth";
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import { Chip } from "@mui/material";
 
 const base = process.env.REACT_APP_BASE_URL;
 const blogURL = base + process.env.REACT_APP_BLOG_URL;
@@ -29,6 +32,10 @@ const defaultTheme = createTheme();
 export default function Blog() {
   const allBlogsData = useRouteLoaderData("all-blogs");
   const blogData = useRouteLoaderData("single-blog");
+  const navigate = useNavigate();
+  const handleChipClick = () => {
+    navigate("..");
+  };
 
   const featuredPosts = [allBlogsData.data[0], allBlogsData.data[2]];
 
@@ -37,6 +44,14 @@ export default function Blog() {
       <CssBaseline />
       <Container maxWidth="lg">
         <main>
+          <div>
+            <Chip
+              icon={<ArrowBackIosNewIcon />}
+              label="Blogs"
+              onClick={handleChipClick}
+              sx={{my:5,fontSize:18}}
+            />
+          </div>
           <MainFeaturedPost blog={blogData.data} />
           <Grid container spacing={4}>
             {featuredPosts.map((blog) => (
@@ -76,7 +91,10 @@ export async function action({ request, params }) {
   try {
     const res = await axios.delete(deleteUrl, { headers: { Authorization } });
   } catch (error) {
-    throw error;
+    throw json(
+      { errorMsg: error.response.data.error },
+      { status: error.response.status }
+    );
   }
 
   return redirect("/blogs");

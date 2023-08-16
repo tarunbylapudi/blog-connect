@@ -6,13 +6,19 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import BlogCard from "../common/BlogCard";
 
 import classes from "./css/Home.module.css";
-import { json, redirect, useRouteLoaderData } from "react-router-dom";
+import {
+  json,
+  redirect,
+  useRouteLoaderData,
+  useNavigate,
+} from "react-router-dom";
 import axios from "axios";
 import Filter from "../filter/filter";
 import { checkAuthLoader, getAuthToken } from "../../utils/auth";
-import { Box, Button, Link, Typography } from "@mui/material";
+import { Box, Button, Chip, Link, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import EmptyResults from "../common/EmptyResults";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const base = process.env.REACT_APP_BASE_URL;
 const getAllBlogsURL = base + process.env.REACT_APP_ADD_GET_BLOGS_URL;
@@ -101,8 +107,10 @@ export async function loader({ request, params }) {
       console.log(response.data);
       return response.data;
     } catch (error) {
-      console.log(error.status);
-      throw json({ error: error.response.data.error });
+      throw json(
+        { errorMsg: error.response.data.error },
+        { status: error.response.status }
+      );
     }
   } else {
     const searchParams = new URL(request.url).searchParams;
@@ -114,7 +122,10 @@ export async function loader({ request, params }) {
       return response.data;
     } catch (error) {
       console.log(error.status);
-      throw json({ error: error.response.data.error });
+      throw json(
+        { errorMsg: error.response.data.error },
+        { status: error.response.status }
+      );
     }
   }
 }

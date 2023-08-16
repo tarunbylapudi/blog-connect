@@ -8,14 +8,28 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import AdbIcon from "@mui/icons-material/Adb";
-import { Form, Link } from "react-router-dom";
 import { useSnackbar } from "notistack";
-import { useNavigate, useRouteLoaderData } from "react-router-dom";
+import { useRouteLoaderData, useSubmit, Link } from "react-router-dom";
+import Modal from "./Modal";
 
 const Header = () => {
+  const [modelOpen, setModalOpen] = React.useState(false);
+  const submit = useSubmit();
   const isLoggedIn = useRouteLoaderData("token-loader");
   const { enqueueSnackbar } = useSnackbar();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
+
+  const backBtnHandler = () => {
+    setModalOpen(false);
+  };
+  const okBtnHandler = () => {
+    setModalOpen(false);
+    submit(null, { method: "post", action: `/logout` });
+  };
+
+  const logoutHandler = () => {
+    setModalOpen(true);
+  };
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -52,31 +66,32 @@ const Header = () => {
 
   return (
     <>
-      <AppBar position="static">
+      <AppBar position="static" sx={{ backgroundColor: "#121138" }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-            <Link
-              to={isLoggedIn ? "/blogs" : "/"}
-              style={{ textDecoration: "none" }}
+
+            <Typography
+              variant="h6"
+              noWrap
+              sx={{
+                mr: 2,
+                display: { xs: "none", md: "flex" },
+                fontFamily: "monospace",
+                fontWeight: 700,
+                letterSpacing: ".3rem",
+                color: "white",
+                textDecoration: "none",
+              }}
+              onClick={logoHandler}
             >
-              <Typography
-                variant="h6"
-                noWrap
-                sx={{
-                  mr: 2,
-                  display: { xs: "none", md: "flex" },
-                  fontFamily: "monospace",
-                  fontWeight: 700,
-                  letterSpacing: ".3rem",
-                  color: "white",
-                  textDecoration: "none",
-                }}
-                onClick={logoHandler}
+              <Link
+                to={isLoggedIn ? "/blogs" : "/"}
+                style={{ textDecoration: "none" }}
               >
-                LOGO
-              </Typography>
-            </Link>
+                BlogConnect
+              </Link>
+            </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <IconButton
@@ -90,14 +105,18 @@ const Header = () => {
                 <MenuIcon />
               </IconButton>
 
-              <Link to={`/blogs`} style={{ textDecoration: "none" }}>
-                <Button sx={{ my: 2, color: "white", display: "block" }}>
+              <Button
+                sx={{ my: 2, color: "#50bfa0", display: "block" }}
+                onClick={handleCloseNavMenu}
+              >
+                <Link to={`/blogs`} style={{ textDecoration: "none" }}>
                   Blogs
-                </Button>
-              </Link>
+                </Link>
+              </Button>
+
               <Link to={`/blogs/create`} style={{ textDecoration: "none" }}>
                 <Button
-                  sx={{ my: 2, color: "white", display: "block" }}
+                  sx={{ my: 2, color: "#50bfa0", display: "block" }}
                   onClick={createBlogHandler}
                 >
                   Create Blog
@@ -105,7 +124,7 @@ const Header = () => {
               </Link>
               <Link to={`/myBlogs`} style={{ textDecoration: "none" }}>
                 <Button
-                  sx={{ my: 2, color: "white", display: "block" }}
+                  sx={{ my: 2, color: "#50bfa0", display: "block" }}
                   onClick={myBlogsHandler}
                 >
                   My Blogs
@@ -125,7 +144,7 @@ const Header = () => {
                 fontFamily: "monospace",
                 fontWeight: 700,
                 letterSpacing: ".3rem",
-                color: "inherit",
+                color: "#50bfa0",
                 textDecoration: "none",
               }}
             >
@@ -133,13 +152,13 @@ const Header = () => {
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               <Link to={`/blogs`} style={{ textDecoration: "none" }}>
-                <Button sx={{ my: 2, color: "white", display: "block" }}>
+                <Button sx={{ my: 2, color: "#50bfa0", display: "block" }}>
                   Blogs
                 </Button>
               </Link>
               <Link to={`/blogs/create`} style={{ textDecoration: "none" }}>
                 <Button
-                  sx={{ my: 2, color: "white", display: "block" }}
+                  sx={{ my: 2, color: "#50bfa0", display: "block" }}
                   onClick={createBlogHandler}
                 >
                   Create Blog
@@ -147,7 +166,7 @@ const Header = () => {
               </Link>
               <Link to={`/myBlogs`} style={{ textDecoration: "none" }}>
                 <Button
-                  sx={{ my: 2, color: "white", display: "block" }}
+                  sx={{ my: 2, color: "#50bfa0", display: "block" }}
                   onClick={myBlogsHandler}
                 >
                   My Blogs
@@ -157,21 +176,29 @@ const Header = () => {
 
             {isLoggedIn && (
               <Box sx={{ flexGrow: 0 }}>
-                <Form action="/logout" method="post">
-                  <Button
-                    textAlign="center"
-                    type="submit"
-                    color="error"
-                    variant="contained"
-                  >
-                    Logout
-                  </Button>
-                </Form>
+                <Button
+                  textAlign="center"
+                  type="submit"
+                  sx={{ backgroundColor: "#50bfa0" }}
+                  variant="contained"
+                  onClick={logoutHandler}
+                >
+                  Logout
+                </Button>
               </Box>
             )}
           </Toolbar>
         </Container>
       </AppBar>
+      <Modal
+        open={modelOpen}
+        header="Logout ?"
+        text="Do you want to logout, session wil lbe lost!"
+        okBtn="logout"
+        backBtn="stay signed in"
+        useOkBtnHandler={okBtnHandler}
+        useBackBtnHandler={backBtnHandler}
+      />
     </>
   );
 };

@@ -20,6 +20,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Alert from "@mui/material/Alert";
 import axios from "axios";
+import Alertt from "../common/Alertt";
 
 const base = process.env.REACT_APP_BASE_URL;
 const registerURL = base + process.env.REACT_APP_REGISTER_URL;
@@ -34,38 +35,27 @@ const SignUp = (props) => {
   const signUpResponse = useActionData();
   const [errors, setErrors] = React.useState([]);
 
-  const ValidationErrors = (signUpResponse) => {
-    if (signUpResponse) {
-      if (signUpResponse.error.error.includes("email")) {
-        setErrors(["Please add a valid email"]);
-      }
-      if (signUpResponse.error.error.includes("password")) {
-        setErrors([
-          "password must has atleast 8 characters that include atleast 1 lower case, 1 upper case, 1 number and 1 special character",
-        ]);
-      }
-      if (
-        signUpResponse.error.error.includes("email") &&
-        signUpResponse.error.error.includes("password")
-      ) {
-        setErrors([
-          "Please add a valid email",
-          "password must has atleast 8 characters that include atleast 1 lower case, 1 upper case, 1 number and 1 special character",
-        ]);
-      }
-      console.log(errors);
-    }
-  };
-  React.useEffect(() => {
-    ValidationErrors(signUpResponse);
-  }, [signUpResponse]);
-
   React.useEffect(() => {
     console.log("useEffect");
     if (isLoggedIn) {
       navigate("/blogs");
     }
   }, []);
+
+  const [open, setOpen] = React.useState(false);
+  const [errorMsg, seterrorMsg] = React.useState("");
+  React.useEffect(() => {
+    if (signUpResponse) {
+      if (signUpResponse.errorMsg !== undefined) {
+        seterrorMsg(signUpResponse.errorMsg);
+        console.log(errorMsg);
+        setOpen(true);
+      }
+    }
+  }, [signUpResponse]);
+  const AlertCloseHandler = () => {
+    setOpen(false);
+  };
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
@@ -81,7 +71,6 @@ const SignUp = (props) => {
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
-          {errors}
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
@@ -122,18 +111,13 @@ const SignUp = (props) => {
                   />
                 </Grid>
               </Grid>
-              {errors[0]}
-              {errors.length > 0 &&
-                errors.map((error) => (
-                  <Alert severity="error" variant="outlined">
-                    {error}
-                  </Alert>
-                ))}
-              {/* {signUpResponse && (
-                <Alert severity="error" variant="outlined">
-                  This email is already registered!
-                </Alert>
-              )} */}
+
+              <Alertt
+                open={open}
+                AlertCloseHandler={AlertCloseHandler}
+                message={errorMsg}
+              />
+
               <Button
                 type="submit"
                 fullWidth
@@ -176,6 +160,9 @@ export async function action({ request, params }) {
     console.log(res.data.token);
     return redirect("/blogs");
   } catch (error) {
-    return json({ error: error.response.data });
+    return json(
+      { errorMsg: error.response.data.error },
+      { status: error.response.status }
+    );
   }
 }

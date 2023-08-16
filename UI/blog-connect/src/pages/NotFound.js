@@ -10,7 +10,7 @@ const NotFound = () => {
   const error = useRouteError();
   let message = "The page you’re looking for doesn’t exist";
 
-  if (error.data.errorMsg) {
+  if (error && error.data.errorMsg) {
     message = error.data.errorMsg;
   }
 
@@ -26,7 +26,7 @@ const NotFound = () => {
       }}
     >
       <Typography variant="h1" style={{ color: "white" }}>
-        404
+        {error.status}
       </Typography>
       <Typography variant="h6" style={{ color: "white" }}>
         {message}

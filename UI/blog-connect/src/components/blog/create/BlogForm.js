@@ -1,5 +1,5 @@
-import React from "react";
-import { Form, redirect } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { Form, json, redirect, useActionData } from "react-router-dom";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -12,6 +12,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import { getAuthToken } from "../../../utils/auth";
+import Alertt from "../../common/Alertt";
 
 const base = process.env.REACT_APP_BASE_URL;
 const createBlogUrl = base + process.env.REACT_APP_CREATE_BLOG;
@@ -19,6 +20,10 @@ const updateBlogUrl = base + process.env.REACT_APP_UPDATE_BLOG;
 
 const defaultTheme = createTheme();
 const BlogForm = (props) => {
+  const [open, setOpen] = useState(false);
+  const [errorMsg, seterrorMsg] = useState("");
+  const blogResponse = useActionData();
+
   let article = "";
   let blogName = "";
   let authorName = "";
@@ -30,6 +35,19 @@ const BlogForm = (props) => {
     authorName = props.blog.authorName;
     category = props.blog.category;
   }
+  useEffect(() => {
+    if (blogResponse) {
+      if (blogResponse.errorMsg !== undefined) {
+        seterrorMsg(blogResponse.errorMsg);
+        console.log(errorMsg);
+        setOpen(true);
+      }
+    }
+  }, [blogResponse]);
+
+  const AlertCloseHandler = () => {
+    setOpen(false);
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -46,6 +64,7 @@ const BlogForm = (props) => {
           <Typography component="h1" variant="h5">
             {props.method === "post" ? "Create" : "Update"} Blog
           </Typography>
+
           <Box Validate sx={{ mt: 3 }}>
             <Form method={props.method}>
               <Grid container spacing={2}>
@@ -97,6 +116,11 @@ const BlogForm = (props) => {
                   ></textarea>
                 </Grid>
               </Grid>
+              <Alertt
+                open={open}
+                AlertCloseHandler={AlertCloseHandler}
+                message={errorMsg}
+              />
               <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
                 {props.method === "post" ? "Create" : "Update"}
               </Button>
@@ -124,11 +148,18 @@ export async function action({ request, params }) {
 
   try {
     if (request.method === "POST") {
-      const res = await axios.post(createBlogUrl, reqData, {
-        headers: {
-          Authorization,
-        },
-      });
+      try {
+        const res = await axios.post(createBlogUrl, reqData, {
+          headers: {
+            Authorization,
+          },
+        });
+      } catch (error) {
+        return json(
+          { errorMsg: error.response.data.error },
+          { status: error.response.status }
+        );
+      }
     } else if (request.method === "PUT") {
       const blogId = params.id;
       const updateUrl = updateBlogUrl + `/${blogId}`;
@@ -139,8 +170,10 @@ export async function action({ request, params }) {
       });
     }
   } catch (error) {
-    console.log("catch");
-    throw error;
+    return json(
+      { errorMsg: error.response.data.error },
+      { status: error.response.status }
+    );
   }
 
   return redirect("/blogs");

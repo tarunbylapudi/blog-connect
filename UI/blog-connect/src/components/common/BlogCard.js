@@ -38,7 +38,7 @@ const BlogCard = (props) => {
   };
   return (
     <>
-      <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
+      <Card sx={{ height: "100%", display: "flex", flexDirection: "column", boxShadow: 3 }}>
         {isLoggedIn}
         <CardMedia
           component="div"
@@ -87,7 +87,7 @@ const BlogCard = (props) => {
         header="Delete Blog?"
         text="Blog will be perminently deleted and it cannot be restored back!"
         okBtn="delete"
-        backBtn="back"
+        backBtn="cancel"
         useOkBtnHandler={okBtnHandler}
         useBackBtnHandler={backBtnHandler}
       />

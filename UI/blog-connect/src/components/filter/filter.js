@@ -76,7 +76,9 @@ function Filter(props) {
           {/* {toDate} */}
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
+              sx={{mr: 2}}
               value={fromDate}
+              label="From Date"
               onChange={(newValue) => setFromDate(newValue)}
             />
             {/* <span >
@@ -84,6 +86,7 @@ function Filter(props) {
                             </span> */}
             <DatePicker
               value={toDate}
+              label="To Date"
               onChange={(newValue) => setToDate(newValue)}
             />
           </LocalizationProvider>
@@ -112,10 +115,10 @@ function Filter(props) {
           </FormControl>
         </Item>
       </Grid>
-      <Grid item xs={12} sm={6} md={3}>
-        <Item>
+      <Grid item xs={12} sm={6} md={3} sx={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+        {/* <Item> */}
           <Button
-            color="secondary"
+            sx={{mr: 2, backgroundColor: "#121138"}}
             onClick={handleClick}
             // loading={loading}
             // loadingPosition="start"
@@ -126,13 +129,13 @@ function Filter(props) {
           </Button>
 
           <Button
-            color="secondary"
+            sx={{backgroundColor: "#121138"}}
             variant="contained"
             onClick={clearFiltersHandler}
           >
             <span>Clear</span>
           </Button>
-        </Item>
+        {/* </Item> */}
       </Grid>
     </Grid>
   );

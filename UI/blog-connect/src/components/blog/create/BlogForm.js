@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Form, json, redirect, useActionData } from "react-router-dom";
+import { Form, json, redirect, useActionData, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -20,6 +20,7 @@ const updateBlogUrl = base + process.env.REACT_APP_UPDATE_BLOG;
 
 const defaultTheme = createTheme();
 const BlogForm = (props) => {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [errorMsg, seterrorMsg] = useState("");
   const blogResponse = useActionData();
@@ -48,6 +49,9 @@ const BlogForm = (props) => {
   const AlertCloseHandler = () => {
     setOpen(false);
   };
+  const cancelHandler =() => {
+    navigate("/blogs");
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -121,8 +125,11 @@ const BlogForm = (props) => {
                 AlertCloseHandler={AlertCloseHandler}
                 message={errorMsg}
               />
-              <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+              <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2, backgroundColor: "#121138" }}>
                 {props.method === "post" ? "Create" : "Update"}
+              </Button>
+              <Button variant="contained" sx={{ mt: 3, mb: 2, ml: 2, backgroundColor: "#121138" }} onClick={cancelHandler}>
+                Cancel
               </Button>
             </Form>
           </Box>

@@ -11,6 +11,7 @@ import {
   redirect,
   useRouteLoaderData,
   useNavigate,
+  useLocation,
 } from "react-router-dom";
 import axios from "axios";
 import Filter from "../filter/filter";
@@ -29,6 +30,7 @@ const defaultTheme = createTheme();
 const primary = grey[800];
 
 export default function Home() {
+  const location = useLocation();
   const blogs = useRouteLoaderData("all-blogs");
   const myBlogs = useRouteLoaderData("my-blogs");
 
@@ -44,7 +46,7 @@ export default function Home() {
       <main className={classes.home}>
         <Container sx={{ py: 8 }} maxWidth="lg">
           <div>
-            <Filter category={uniqueCategory} />
+            {location.pathname === "/blogs" && <Filter category={uniqueCategory} />}
           </div>
 
           <Grid container spacing={3}>
@@ -55,7 +57,7 @@ export default function Home() {
                 </Grid>
               ))}
             {getBlogs.data.length === 0 && (
-              <EmptyResults text={"No results found for selected criteria."} />
+              <EmptyResults text={location.pathname==="/myBlogs"?"No Blogs to display": "No results found for selected criteria."} />
             )}
           </Grid>
         </Container>

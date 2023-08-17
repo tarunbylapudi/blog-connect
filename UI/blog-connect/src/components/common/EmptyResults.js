@@ -10,7 +10,7 @@ const EmptyResults = ({ text }) => {
   return (
     <Box
       sx={{
-        margin: "7% auto",
+        margin: "8% auto",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",

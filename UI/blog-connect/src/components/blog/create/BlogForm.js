@@ -1,5 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Form, json, redirect, useActionData, useNavigate } from "react-router-dom";
+import {
+  Form,
+  json,
+  redirect,
+  useActionData,
+  useNavigate,
+} from "react-router-dom";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -13,6 +19,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import { getAuthToken } from "../../../utils/auth";
 import Alertt from "../../common/Alertt";
+import { CardContent } from "@mui/material";
 
 const base = process.env.REACT_APP_BASE_URL;
 const createBlogUrl = base + process.env.REACT_APP_CREATE_BLOG;
@@ -49,14 +56,15 @@ const BlogForm = (props) => {
   const AlertCloseHandler = () => {
     setOpen(false);
   };
-  const cancelHandler =() => {
+  const cancelHandler = () => {
     navigate("/blogs");
-  }
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
+
         <Box
           sx={{
             marginTop: 8,
@@ -65,74 +73,86 @@ const BlogForm = (props) => {
             alignItems: "center",
           }}
         >
-          <Typography component="h1" variant="h5">
-            {props.method === "post" ? "Create" : "Update"} Blog
-          </Typography>
+          <Card sx={{ backgroundColor: "white", padding: 2, boxShadow: 3 }}>
+            <CardContent>
+              <Typography component="h1" variant="h5">
+                {props.method === "post" ? "Create" : "Update"} Blog
+              </Typography>
 
-          <Box Validate sx={{ mt: 3 }}>
-            <Form method={props.method}>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <TextField
-                    autoComplete="author-name"
-                    name="authorName"
-                    required
-                    fullWidth
-                    id="Name"
-                    label="Author Name"
-                    defaultValue={authorName}
-                    autoFocus
-                  />
-                </Grid>
+              <Box Validate sx={{ mt: 3 }}>
+                <Form method={props.method}>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      <TextField
+                        autoComplete="author-name"
+                        name="authorName"
+                        required
+                        fullWidth
+                        id="Name"
+                        label="Author Name"
+                        defaultValue={authorName}
+                        autoFocus
+                      />
+                    </Grid>
 
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="blogName"
-                    label="Blog Name"
-                    name="blogName"
-                    defaultValue={blogName}
-                    autoComplete="blog-name"
+                    <Grid item xs={12}>
+                      <TextField
+                        required
+                        fullWidth
+                        id="blogName"
+                        label="Blog Name"
+                        name="blogName"
+                        defaultValue={blogName}
+                        autoComplete="blog-name"
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        required
+                        fullWidth
+                        name="category"
+                        label="category"
+                        id="category"
+                        defaultValue={category}
+                        autoComplete="category"
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <textarea
+                        rows={20}
+                        cols={100}
+                        name="article"
+                        label="article"
+                        id="article"
+                        defaultValue={article}
+                        placeholder="Enter your blog article.."
+                        required
+                      ></textarea>
+                    </Grid>
+                  </Grid>
+                  <Alertt
+                    open={open}
+                    AlertCloseHandler={AlertCloseHandler}
+                    message={errorMsg}
                   />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    name="category"
-                    label="category"
-                    id="category"
-                    defaultValue={category}
-                    autoComplete="category"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <textarea
-                    rows={20}
-                    cols={100}
-                    name="article"
-                    label="article"
-                    id="article"
-                    defaultValue={article}
-                    placeholder="Enter your blog article.."
-                    required
-                  ></textarea>
-                </Grid>
-              </Grid>
-              <Alertt
-                open={open}
-                AlertCloseHandler={AlertCloseHandler}
-                message={errorMsg}
-              />
-              <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2, backgroundColor: "#121138" }}>
-                {props.method === "post" ? "Create" : "Update"}
-              </Button>
-              <Button variant="contained" sx={{ mt: 3, mb: 2, ml: 2, backgroundColor: "#121138" }} onClick={cancelHandler}>
-                Cancel
-              </Button>
-            </Form>
-          </Box>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2, backgroundColor: "#121138" }}
+                  >
+                    {props.method === "post" ? "Create" : "Update"}
+                  </Button>
+                  <Button
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2, ml: 2, backgroundColor: "#121138" }}
+                    onClick={cancelHandler}
+                  >
+                    Cancel
+                  </Button>
+                </Form>
+              </Box>
+            </CardContent>
+          </Card>
         </Box>
       </Container>
     </ThemeProvider>

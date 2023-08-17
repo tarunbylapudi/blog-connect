@@ -11,6 +11,7 @@ import AdbIcon from "@mui/icons-material/Adb";
 import { useSnackbar } from "notistack";
 import { useRouteLoaderData, useSubmit, Link } from "react-router-dom";
 import Modal from "./Modal";
+import BookIcon from '@mui/icons-material/Book';
 
 const Header = () => {
   const [modelOpen, setModalOpen] = React.useState(false);
@@ -69,7 +70,7 @@ const Header = () => {
       <AppBar position="static" sx={{ backgroundColor: "#121138" }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+            <BookIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
 
             <Typography
               variant="h6"
@@ -87,9 +88,9 @@ const Header = () => {
             >
               <Link
                 to={isLoggedIn ? "/blogs" : "/"}
-                style={{ textDecoration: "none" }}
+                style={{ textDecoration: "none", color: "white" }}
               >
-                BlogConnect
+                BLOG-CONNECT
               </Link>
             </Typography>
 

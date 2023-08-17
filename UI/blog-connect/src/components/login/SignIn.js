@@ -18,7 +18,7 @@ import {
   useRouteLoaderData,
   useNavigate,
 } from "react-router-dom";
-import { Card } from "@mui/material";
+import { Card, CardContent } from "@mui/material";
 import axios from "axios";
 import Alertt from "../common/Alertt";
 
@@ -54,12 +54,13 @@ const SignIn = (props) => {
   };
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Card>
-        <Container component="main" maxWidth="xs">
-          <CssBaseline />
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div style={{margin: "20% auto"}}>
+        <Card sx={{ backgroundColor: "white", padding: 2, boxShadow: 3 }}>
+          <CardContent>
           <Box
             sx={{
-              marginTop: 8,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -117,9 +118,11 @@ const SignIn = (props) => {
               </Grid>
             </Box>
           </Box>
-        </Container>
-      </Card>
-    </ThemeProvider>
+        </CardContent>
+      </Card >
+      </div>
+    </Container>
+    </ThemeProvider >
   );
 };
 

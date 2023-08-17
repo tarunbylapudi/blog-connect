@@ -15,11 +15,11 @@ function Main(props) {
       xs={12}
       md={8}
     >
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" gutterBottom sx={{mb:2}}>
         {blogName}
       </Typography>
       <Divider />
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="subtitle1" gutterBottom sx={{mt:2}}>
         {article}
       </Typography>
     </Grid>

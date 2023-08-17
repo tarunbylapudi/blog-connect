@@ -21,6 +21,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Alert from "@mui/material/Alert";
 import axios from "axios";
 import Alertt from "../common/Alertt";
+import { Card, CardContent } from "@mui/material";
 
 const base = process.env.REACT_APP_BASE_URL;
 const registerURL = base + process.env.REACT_APP_REGISTER_URL;
@@ -60,82 +61,87 @@ const SignUp = (props) => {
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign up
-          </Typography>
-          <Box noValidate sx={{ mt: 3 }}>
-            <Form method="post">
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <TextField
-                    autoComplete="given-name"
-                    name="name"
-                    required
-                    fullWidth
-                    id="Name"
-                    label="Name"
-                    autoFocus
-                  />
-                </Grid>
-
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    type="password"
-                    id="password"
-                    autoComplete="new-password"
-                  />
-                </Grid>
-              </Grid>
-
-              <Alertt
-                open={open}
-                AlertCloseHandler={AlertCloseHandler}
-                message={errorMsg}
-              />
-
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+        <div style={{ margin: "15% auto" }}>
+          <Card sx={{ backgroundColor: "white", padding: 2, boxShadow: 3 }}>
+            <CardContent>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
               >
-                Sign Up
-              </Button>
-              <Grid container justifyContent="flex-end">
-                <Grid item>
-                  <Link to={"/login"} style={{ textDecoration: "none" }}>
-                    Already have an account? Sign in
-                  </Link>
-                </Grid>
-              </Grid>
-            </Form>
-          </Box>
-        </Box>
+                <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                  <LockOutlinedIcon />
+                </Avatar>
+                <Typography component="h1" variant="h5">
+                  Sign up
+                </Typography>
+                <Box noValidate sx={{ mt: 3 }}>
+                  <Form method="post">
+                    <Grid container spacing={2}>
+                      <Grid item xs={12}>
+                        <TextField
+                          autoComplete="given-name"
+                          name="name"
+                          required
+                          fullWidth
+                          id="Name"
+                          label="Name"
+                          autoFocus
+                        />
+                      </Grid>
+
+                      <Grid item xs={12}>
+                        <TextField
+                          required
+                          fullWidth
+                          id="email"
+                          label="Email Address"
+                          name="email"
+                          autoComplete="email"
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          required
+                          fullWidth
+                          name="password"
+                          label="Password"
+                          type="password"
+                          id="password"
+                          autoComplete="new-password"
+                        />
+                      </Grid>
+                    </Grid>
+
+                    <Alertt
+                      open={open}
+                      AlertCloseHandler={AlertCloseHandler}
+                      message={errorMsg}
+                    />
+
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      sx={{ mt: 3, mb: 2 }}
+                    >
+                      Sign Up
+                    </Button>
+                    <Grid container justifyContent="flex-end">
+                      <Grid item>
+                        <Link to={"/login"} style={{ textDecoration: "none" }}>
+                          Already have an account? Sign in
+                        </Link>
+                      </Grid>
+                    </Grid>
+                  </Form>
+                </Box>
+              </Box>
+            </CardContent>
+          </Card>
+        </div>
       </Container>
     </ThemeProvider>
   );

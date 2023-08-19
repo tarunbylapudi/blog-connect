@@ -11,7 +11,7 @@ import CardMedia from '@mui/material/CardMedia';
 function FeaturedPost(props) {
   const { blogName, article, _id } = props.blog;
   const shortArticle = article.substring(0, 170) + "...";
-  const url = "https://source.unsplash.com/random?wallpapers";
+  const url = `https://source.unsplash.com/random?wallpapers&${Math.random()}`;
 
   return (
     <Grid item xs={12} md={6}>

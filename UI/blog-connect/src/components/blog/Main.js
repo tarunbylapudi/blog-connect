@@ -19,7 +19,7 @@ function Main(props) {
         {blogName}
       </Typography>
       <Divider />
-      <Typography variant="subtitle1" gutterBottom sx={{mt:2}}>
+      <Typography variant="subtitle1" gutterBottom sx={{my:5}}>
         {article}
       </Typography>
     </Grid>

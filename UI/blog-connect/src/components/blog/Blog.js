@@ -19,7 +19,7 @@ import Sidebar from "./Sidebar";
 import FeaturedPost from "./FeaturedPost";
 import axios from "axios";
 import { getAuthToken } from "../../utils/auth";
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { Chip } from "@mui/material";
 
 const base = process.env.REACT_APP_BASE_URL;
@@ -37,7 +37,11 @@ export default function Blog() {
     navigate("..");
   };
 
-  const featuredPosts = [allBlogsData.data[0], allBlogsData.data[2]];
+  const randomPost = () => Math.floor(Math.random() * allBlogsData.data.length);
+  const featuredPosts = [
+    allBlogsData.data[randomPost()],
+    allBlogsData.data[randomPost()],
+  ];
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -49,7 +53,7 @@ export default function Blog() {
               icon={<ArrowBackIosNewIcon />}
               label="Blogs"
               onClick={handleChipClick}
-              sx={{my:5,fontSize:18}}
+              sx={{ my: 5, fontSize: 18 }}
             />
           </div>
           <MainFeaturedPost blog={blogData.data} />

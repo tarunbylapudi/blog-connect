@@ -35,7 +35,7 @@ export default function Home() {
   const getBlogs = blogs ? blogs : myBlogs;
 
   const displayBlogs = getBlogs.data.map((blog) => {
-    return { ...blog, image: "https://source.unsplash.com/random?wallpapers" };
+    return { ...blog, image: `https://source.unsplash.com/random?wallpapers&${Math.random()}` };
   });
   const uniqueCategory = [
     "All",

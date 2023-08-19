@@ -34,6 +34,7 @@ exports.getBlogs = async (req, res, next) => {
     }
 
     await produceMessage("all blogs fetched from DB");
+
     res.status(200).json({ success: true, count: blogs.length, data: blogs });
   } catch (error) {
     next(error);

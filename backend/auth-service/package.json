@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "SET NODE_ENV=production & node server",
+    "dev": "nodemon server",
     "sonar": "gulp sonar",
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:unit": "vue-cli-service test:unit --coverage",

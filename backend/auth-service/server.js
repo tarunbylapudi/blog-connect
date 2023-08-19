@@ -92,9 +92,13 @@ app.use(ErrorHandler);
 
 const port = process.env.PORT || 8000;
 
-const server = app.listen(port, () => {
-  console.log(`server started running in ${port}`.yellow.bold);
-});
+const server = app.listen(
+  port,
+  console.log(
+    `server started running in ${process.env.NODE_ENV} mode on port ${port}`
+      .yellow.bold
+  )
+);
 
 //handle unhandled promises
 process.on("unhandledRejection", (err, Promise) => {

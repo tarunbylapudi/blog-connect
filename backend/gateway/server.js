@@ -53,11 +53,12 @@ const server = gateway({
     },
   ],
 });
-
+const port = process.env.PORT || 8002;
 server
-  .start(process.env.PORT || 8002)
+  .start(port)
   .then(
     console.log(
-      `gateway started running in port: ${process.env.PORT}`.yellow.bold
+      `gateway started running in ${process.env.NODE_ENV } mode on port ${port}`
+        .yellow.bold
     )
   );

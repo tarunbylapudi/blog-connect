@@ -21,7 +21,7 @@ const BlogCard = (props) => {
   const [deleteBlog, setDeleteBlog] = useState(false);
   const submit = useSubmit();
   const isLoggedIn = useRouteLoaderData("token-loader");
-  const { blogName, article, _id } = props.blog;
+  const { blogName, article, _id, image } = props.blog;
   const content = article.substring(0, 150) + "...";
 
   const backBtnHandler = () => {
@@ -38,7 +38,14 @@ const BlogCard = (props) => {
   };
   return (
     <>
-      <Card sx={{ height: "100%", display: "flex", flexDirection: "column", boxShadow: 3 }}>
+      <Card
+        sx={{
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          boxShadow: 3,
+        }}
+      >
         {isLoggedIn}
         <CardMedia
           component="div"
@@ -46,7 +53,7 @@ const BlogCard = (props) => {
             // 16:9
             pt: "56.25%",
           }}
-          image="https://source.unsplash.com/random?wallpapers"
+          image={image}
         />
         <CardContent sx={{ flexGrow: 1 }}>
           <Typography gutterBottom variant="h5">

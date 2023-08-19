@@ -90,6 +90,16 @@ app.use(errorHandler);
 
 const port = process.env.PORT || 8001;
 
-app.listen(port, () => {
-  console.log(`server started running in ${port}`.yellow.bold);
+const server = app.listen(
+  port,
+  console.log(
+    `blog-service started running in ${process.env.NODE_ENV} mode on port ${port}`
+      .yellow.bold
+  )
+);
+
+//handle unhandled promises
+process.on("unhandledRejection", (err, Promise) => {
+  console.log(`Error : ${err.message}`.red);
+  server.close(() => process.exit(1));
 });

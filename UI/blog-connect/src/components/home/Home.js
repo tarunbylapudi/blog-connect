@@ -35,7 +35,12 @@ export default function Home() {
   const getBlogs = blogs ? blogs : myBlogs;
 
   const displayBlogs = getBlogs.data.map((blog) => {
-    return { ...blog, image: `https://source.unsplash.com/random?wallpapers&${Math.random()}` };
+    return {
+      ...blog,
+      image: `https://source.unsplash.com/random?${
+        blog.category
+      }&${Math.random()}`,
+    };
   });
   const uniqueCategory = [
     "All",
@@ -47,7 +52,6 @@ export default function Home() {
 
       <main className={classes.home}>
         <Container sx={{ py: 8, my: "auto" }} maxWidth="lg">
-         
           <div>
             {location.pathname === "/blogs" && (
               <Filter category={uniqueCategory} />

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "SET NODE_ENV=production & node server",
+    "start": "node server",
     "dev": "nodemon server",
     "sonar": "gulp sonar",
     "test": "echo \"Error: no test specified\" && exit 1",

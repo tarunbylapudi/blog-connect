@@ -15,7 +15,7 @@ const conditionalProtect = require("./middleware/conditionalProtect");
 dotenv.config({ path: "config/config.env" });
 
 const server = gateway({
-  timeout: 5000,
+  timeout: 10000,
   middlewares: [
     morgan("dev", {
       skip: (req, res) => req.url === "/metrics",
@@ -44,11 +44,11 @@ const server = gateway({
   routes: [
     {
       prefix: "/auth-service",
-      target: "http://localhost:8000",
+      target: "http://auth-service-cntr:8000",
     },
     {
       prefix: "/blog-service",
-      target: "http://localhost:8001",
+      target: "http://blog-service-cntr:8001",
       middlewares: [conditionalProtect],
     },
   ],
@@ -58,7 +58,7 @@ server
   .start(port)
   .then(
     console.log(
-      `gateway started running in ${process.env.NODE_ENV } mode on port ${port}`
+      `gateway started running on port ${port}`
         .yellow.bold
     )
   );

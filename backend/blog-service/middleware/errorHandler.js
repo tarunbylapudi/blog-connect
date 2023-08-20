@@ -1,4 +1,4 @@
-const ErrorResponse = require("../utils/errorResponse");
+const ErrorResponse = require("../utils/ErrorResponse");
 const produceMessage = require("../config/kafkaProducerConfig");
 
 const errorHandler = async (err, req, res, next) => {

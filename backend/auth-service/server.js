@@ -15,7 +15,7 @@ const promClient = require("prom-client");
 const DbConnect = require("./config/db");
 const User = require("./model/User");
 const ErrorResponse = require("./utils/ErrorResponse");
-const ErrorHandler = require("./middleware/ErrorHandler");
+const errorHandler = require("./middleware/errorHandler");
 const specs = require("./utils/swagger");
 
 //routes
@@ -88,16 +88,13 @@ app.get("/metrics", async (req, res) => {
   }
 });
 
-app.use(ErrorHandler);
+app.use(errorHandler);
 
 const port = process.env.PORT || 8000;
 
 const server = app.listen(
   port,
-  console.log(
-    `server started running in ${process.env.NODE_ENV} mode on port ${port}`
-      .yellow.bold
-  )
+  console.log(`auth-server started running on port ${port}`.yellow.bold)
 );
 
 //handle unhandled promises

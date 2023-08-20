@@ -92,10 +92,7 @@ const port = process.env.PORT || 8001;
 
 const server = app.listen(
   port,
-  console.log(
-    `blog-service started running in ${process.env.NODE_ENV} mode on port ${port}`
-      .yellow.bold
-  )
+  console.log(`blog-service started running on port ${port}`.yellow.bold)
 );
 
 //handle unhandled promises

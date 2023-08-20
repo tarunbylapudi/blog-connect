@@ -44,11 +44,11 @@ const server = gateway({
   routes: [
     {
       prefix: "/auth-service",
-      target: "http://auth-service-cntr:8000",
+      target: "http://localhost:8000",
     },
     {
       prefix: "/blog-service",
-      target: "http://blog-service-cntr:8001",
+      target: "http://localhost:8001",
       middlewares: [conditionalProtect],
     },
   ],

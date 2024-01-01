@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npm install --prefix backend/auth-service && npm install --prefix backend/blog-service && npm install --prefix backend/gateway && npm install --prefix UI/blog-connect && npm run build --prefix UI/blog-connect",
+    "build": "npm install && npm install --prefix backend/auth-service && npm install --prefix backend/blog-service && npm install --prefix backend/gateway && npm install --prefix UI/blog-connect && npm run build --prefix UI/blog-connect",
     "start": "concurrently \"npm start --prefix backend/auth-service\" \"npm start --prefix backend/blog-service\" \"npm start --prefix backend/gateway\""
   },
   "repository": {

@@ -1,0 +1,24 @@
+{
+  "name": "blog-connect",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm install --prefix backend/auth-service && npm install --prefix backend/blog-service && npm install --prefix backend/gateway && npm install --prefix UI/blog-connect && npm run build --prefix UI/blog-connect",
+    "start": "concurrently \"npm start --prefix backend/auth-service\" \"npm start --prefix backend/blog-service\" \"npm start --prefix backend/gateway\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tarunbylapudi/blog-connect.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tarunbylapudi/blog-connect/issues"
+  },
+  "homepage": "https://github.com/tarunbylapudi/blog-connect#readme",
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

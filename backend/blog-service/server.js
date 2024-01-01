@@ -19,7 +19,7 @@ const errorHandler = require("./middleware/errorHandler");
 const specs = require("./utils/swagger");
 
 //dotenv config
-dotenv.config({ path: "config/config.env" });
+dotenv.config();
 
 //DB connection
 connectDB();
@@ -85,6 +85,20 @@ app.get("/metrics", async (req, res) => {
   }
 });
 
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "/UI/blog-connect/build")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(
+      path.resolve(__dirname, "UI", "blog-connect", "build", "index.html")
+    );
+  });
+} else {
+  app.get("/", (req, res) => {
+    res.send("API is runninng...");
+  });
+}
+
 //error handler
 app.use(errorHandler);
 
@@ -92,7 +106,10 @@ const port = process.env.PORT || 8001;
 
 const server = app.listen(
   port,
-  console.log(`blog-service started running on port ${port}`.yellow.bold)
+  console.log(
+    `blog-service started running in ${process.env.NODE_ENV} on port ${port}`
+      .yellow.bold
+  )
 );
 
 //handle unhandled promises

@@ -159,6 +159,7 @@ router.route("/myBlogs").get(getMyBlogs);
  *       404:
  *         description: The blog was not found
  */
+
 router.route("/:id").get(getBlog).delete(deleteBlog).put(updateBlog);
 
 router.route("/delete/:id").delete(deleteBlog);

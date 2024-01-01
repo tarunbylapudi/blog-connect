@@ -16,6 +16,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.4.0",
+    "blog-connect": "file:../..",
     "dayjs": "^1.11.9",
     "markdown-to-jsx": "^7.2.1",
     "mdb-react-ui-kit": "^6.1.0",

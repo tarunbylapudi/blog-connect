@@ -22,7 +22,9 @@ const specs = require("./utils/swagger");
 const blogs = require("./routes/blog");
 
 //dotenv config
-dotenv.config({ path: "config/config.env" });
+dotenv.config();
+
+const port = process.env.PORT || 8000;
 
 //db connection
 DbConnect();
@@ -88,13 +90,28 @@ app.get("/metrics", async (req, res) => {
   }
 });
 
-app.use(errorHandler);
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "/UI/blog-connect/build")));
 
-const port = process.env.PORT || 8000;
+  app.get("*", (req, res) => {
+    res.sendFile(
+      path.resolve(__dirname, "UI", "blog-connect", "build", "index.html")
+    );
+  });
+} else {
+  app.get("/", (req, res) => {
+    res.send("API is runninng...");
+  });
+}
+
+app.use(errorHandler);
 
 const server = app.listen(
   port,
-  console.log(`auth-server started running on port ${port}`.yellow.bold)
+  console.log(
+    `auth-server started running in ${process.env.NODE_ENV} on port ${port}`
+      .yellow.bold
+  )
 );
 
 //handle unhandled promises

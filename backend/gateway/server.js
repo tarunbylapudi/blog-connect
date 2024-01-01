@@ -12,7 +12,7 @@ const morgan = require("morgan");
 const ErrorResponse = require("./utils/ErrorResponse");
 const conditionalProtect = require("./middleware/conditionalProtect");
 
-dotenv.config({ path: "config/config.env" });
+dotenv.config();
 
 const server = gateway({
   timeout: 10000,
@@ -58,7 +58,7 @@ server
   .start(port)
   .then(
     console.log(
-      `gateway started running on port ${port}`
+      `gateway started running in ${process.env.NODE_ENV} on port ${port}`
         .yellow.bold
     )
   );
